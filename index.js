@@ -16,6 +16,9 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const admin = require("firebase-admin");
 const serviceAccount = require("./firebase.config");
 
+// Error Handler inports
+const { NotFoundErrorHandler, ServerErrorHandler } = require("./middleware/errors");
+
 // Initialize Firebase App
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -38,6 +41,12 @@ app.use(logger);
 // Routers
 app.use("/user", userRouter);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
+// 404: Not found
+app.use(NotFoundErrorHandler);
+
+// 500: Error reporing
+app.use(ServerErrorHandler);
 
 // Start Listening
 app.listen(PORT, () => {
