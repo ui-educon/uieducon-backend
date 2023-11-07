@@ -242,7 +242,7 @@ userRouter.get("/get-details-by-id", async (req, res) => {
  *       500:
  *         description: Internal Server Error
  */
-userRouter.get('/get-all-packages-purchased', requireAuth, getAllPackagesPurchased)
+userRouter.get('/get-all-packages-purchased', requireAuth, getAllPackagesPurchased);
 
 
 module.exports = userRouter;

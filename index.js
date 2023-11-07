@@ -18,6 +18,7 @@ const serviceAccount = require("./firebase.config");
 
 // Error Handler inports
 const { NotFoundErrorHandler, ServerErrorHandler } = require("./middleware/errors");
+const courseRouter = require("./routes/courseRouter");
 
 // Initialize Firebase App
 admin.initializeApp({
@@ -40,6 +41,7 @@ app.use(logger);
 
 // Routers
 app.use("/user", userRouter);
+app.use("/course", courseRouter);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 404: Not found
