@@ -6,6 +6,8 @@ const { logger } = require("./middleware/memoryLog");
 
 // Routers Imports
 const userRouter = require("./routes/userRouter");
+const courseRouter = require("./routes/courseRouter");
+const packageRouter = require("./routes/packageRouter");
 
 // Swagger Imports
 const swaggerUi = require("swagger-ui-express");
@@ -18,7 +20,6 @@ const serviceAccount = require("./firebase.config");
 
 // Error Handler inports
 const { NotFoundErrorHandler, ServerErrorHandler } = require("./middleware/errors");
-const courseRouter = require("./routes/courseRouter");
 
 // Initialize Firebase App
 admin.initializeApp({
@@ -42,6 +43,7 @@ app.use(logger);
 // Routers
 app.use("/user", userRouter);
 app.use("/course", courseRouter);
+app.use("/package", packageRouter);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 404: Not found
