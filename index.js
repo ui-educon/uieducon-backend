@@ -8,6 +8,7 @@ const { logger } = require("./middleware/memoryLog");
 const userRouter = require("./routes/userRouter");
 const courseRouter = require("./routes/courseRouter");
 const packageRouter = require("./routes/packageRouter");
+const orderRouter = require("./routes/orderRouter");
 
 // Swagger Imports
 const swaggerUi = require("swagger-ui-express");
@@ -44,13 +45,14 @@ app.use(logger);
 app.use("/user", userRouter);
 app.use("/course", courseRouter);
 app.use("/package", packageRouter);
+app.use("/order", orderRouter);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 404: Not found
-app.use(NotFoundErrorHandler);
+// app.use(NotFoundErrorHandler);
 
 // 500: Error reporing
-app.use(ServerErrorHandler);
+// app.use(ServerErrorHandler);
 
 // Start Listening
 app.listen(PORT, () => {

@@ -10,7 +10,7 @@ const getAllCourses = async (req, res) => {
     courses.push(doc.data());
   });
 
-  res.json(courses);
+  res.status(200).json(courses);
 }
 
 module.exports = { getAllCourses }
