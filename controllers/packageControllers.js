@@ -49,10 +49,16 @@ const createPackageOrder = async (req, res) => {
         const createPackageRef = packagesRef.doc()
         const courseResData = courseDocRef.data();
         const pricingINR = courseResData.pricingINR
+        const durationInDays = courseResData?.durationInDays
+        const packageExpiryDate = new Date()
+        packageExpiryDate.setUTCDate(packageExpiryDate.getUTCDate() + durationInDays);
+        const utcTimeString = packageExpiryDate.toISOString();
         const newPackageBody = {
           recordId:createPackageRef.id,
           userId:userId,
           courseId:courseId,
+          currentIndex:0,
+          packageExpiryDate:utcTimeString,
           packagePurchasedTime:currentDateTime.toISOString(),
           packagePurchasedPrice:pricingINR,
           orderCreationId:orderCreationId,

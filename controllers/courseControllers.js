@@ -27,6 +27,19 @@ const getCourseById = async (req, res) => {
 
   if (courseDocRef.exists) {
     const courseDocData = courseDocRef.data();
+    const resourcesList = courseDocData?.sequence
+    const promises = resourcesList.map(async (recordId) => {
+      try {
+        // fetch and return data object if exists
+        const resourceDocResponse = await db.collection("resources").doc(recordId)
+        const resourceDocRef = await resourceDocResponse.get();
+        const courseData = resourceDocRef.data()
+        return courseData
+      } catch (error) {
+        return null;
+      }
+    });
+    courseDocData.sequence = await Promise.all(promises);
     res.status(200).json(courseDocData);
   } else {
     res.status(404).json(null);
