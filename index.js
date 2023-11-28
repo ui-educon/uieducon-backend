@@ -6,6 +6,9 @@ const { logger } = require("./middleware/memoryLog");
 
 // Routers Imports
 const userRouter = require("./routes/userRouter");
+const courseRouter = require("./routes/courseRouter");
+const packageRouter = require("./routes/packageRouter");
+const orderRouter = require("./routes/orderRouter");
 
 // Swagger Imports
 const swaggerUi = require("swagger-ui-express");
@@ -15,6 +18,9 @@ const swaggerJsdoc = require("swagger-jsdoc");
 // Firebase imports
 const admin = require("firebase-admin");
 const serviceAccount = require("./firebase.config");
+
+// Error Handler inports
+const { NotFoundErrorHandler, ServerErrorHandler } = require("./middleware/errors");
 
 // Initialize Firebase App
 admin.initializeApp({
@@ -37,7 +43,16 @@ app.use(logger);
 
 // Routers
 app.use("/user", userRouter);
+app.use("/course", courseRouter);
+app.use("/package", packageRouter);
+app.use("/order", orderRouter);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
+// 404: Not found
+// app.use(NotFoundErrorHandler);
+
+// 500: Error reporing
+// app.use(ServerErrorHandler);
 
 // Start Listening
 app.listen(PORT, () => {
