@@ -14,12 +14,14 @@ const getPackageById = async (req, res) => {
   const packageDocRef = await packageDocResponse.get();
 
   if (packageDocRef.exists) {
-    const packageDocData = packageDocRef.data();
+    let packageDocData = packageDocRef.data();
+    const courseId = packageDocData.courseId;
+    const courseDocRef = await db.collection("courses").doc(courseId).get();
+    packageDocData.courseData = courseDocRef.data();
     res.status(200).json(packageDocData);
   } else {
     res.status(404).json(null);
   }
-
 }
 
 const createPackageOrder = async (req, res) => {
