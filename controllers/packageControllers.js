@@ -10,27 +10,16 @@ const getPackageById = async (req, res) => {
     return res.status(400).send("Package Id Required");
   }
 
-  const packageDocRef = await db.collection("packages").doc(packageId).get();
+  const packageDocResponse = await db.collection("packages").doc(packageId)
+  const packageDocRef = await packageDocResponse.get();
 
   if (packageDocRef.exists) {
     const packageDocData = packageDocRef.data();
-
-    const courseId = packageDocData.courseId;
-    const courseDocRef = await db.collection("courses").doc(courseId).get();
-    packageDocData.courseData = courseDocRef.data();
-
     res.status(200).json(packageDocData);
   } else {
     res.status(404).json(null);
   }
 
-}
-let body = {
-  "course_id":"example",
-  "order_creation_id":"order_creation_id",
-  "razorpay_payment_id":"razorpay_payment_id",
-  "razorpay_order_id":"razorpay_order_id",
-  "razorpay_signature":"razorpay_signature",
 }
 
 const createPackageOrder = async (req, res) => {
