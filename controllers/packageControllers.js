@@ -22,7 +22,26 @@ const getPackageById = async (req, res) => {
   } else {
     res.json(null);
   }
+};
 
-}
+const updateIndex = async (req, res) => {
+  const { packageId } = req.body;
 
-module.exports = { getPackageById }
+  console.log(packageId);
+
+  if (!packageId)
+    return res
+      .status(400)
+      .json({ error: "Bad request", message: "Package id missing" });
+
+  const db = admin.firestore();
+  const packageRef = db.collection("packages").doc(packageId);
+
+  const response = await packageRef.update({
+    currentIndex: FieldValue.increment(1),
+  });
+
+  return res.status(200).json({ message: "Index updated successfully!" });
+};
+
+module.exports = { getPackageById, updateIndex };

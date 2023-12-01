@@ -1,5 +1,6 @@
 const express = require("express");
 const { getAllCourses } = require("../controllers/courseControllers");
+const { getVideoData } = require("../controllers/contentDataControllers");
 
 const courseRouter = express.Router();
 
@@ -16,6 +17,8 @@ const courseRouter = express.Router();
  *       200:
  *         description: A list of all courses
  */
-courseRouter.get('/get-all-courses', getAllCourses);
+courseRouter.get("/get-all-courses", getAllCourses);
+
+courseRouter.get("/get-video-data", getVideoData);
 
 module.exports = courseRouter;
