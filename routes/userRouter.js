@@ -47,7 +47,7 @@ userRouter.get("/all-users", (req, res) => {
       snapshot.forEach((doc) => {
         users.push(doc.data());
       });
-      res.json(users);
+      res.status(200).json(users);
     })
     .catch((error) => {
       console.error("Error getting users", error);
@@ -79,11 +79,9 @@ userRouter.post("/create-user", async (req, res) => {
 
   try {
     const decodedToken = await decodeAccessToken(accessToken);
-    console.log("decodedToken", decodedToken);
     try {
       const db = admin.firestore();
       const uid = decodedToken.uid;
-      console.log("uid", uid);
       let userDefaultData = {
         email: decodedToken?.email || "",
         name: decodedToken?.name || "",
@@ -220,12 +218,11 @@ userRouter.get("/get-details-by-id", async (req, res) => {
     });
 });
 
-
 /**
  * @swagger
  * /user/get-all-packages-purchased:
  *   get:
- *     summary: Get packages purchased by the user 
+ *     summary: Get packages purchased by the user
  *     tags:
  *       - user
  *     produces:
@@ -242,7 +239,6 @@ userRouter.get("/get-details-by-id", async (req, res) => {
  *       500:
  *         description: Internal Server Error
  */
-userRouter.get('/get-all-packages-purchased', requireAuth, getAllPackagesPurchased);
-
+userRouter.get("/get-all-packages-purchased", requireAuth, getAllPackagesPurchased);
 
 module.exports = userRouter;

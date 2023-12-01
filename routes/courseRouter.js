@@ -1,5 +1,8 @@
 const express = require("express");
-const { getAllCourses } = require("../controllers/courseControllers");
+const {
+  getAllCourses,
+  getCourseById,
+} = require("../controllers/courseControllers");
 const { getVideoData } = require("../controllers/contentDataControllers");
 
 const courseRouter = express.Router();
@@ -18,6 +21,27 @@ const courseRouter = express.Router();
  *         description: A list of all courses
  */
 courseRouter.get("/get-all-courses", getAllCourses);
+
+/**
+ * @swagger
+ * /course/get-course-by-id:
+ *   get:
+ *     summary: Get all course doc by id
+ *     tags:
+ *       - course
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: course_id
+ *         description: Course Id
+ *         in: query
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: A course doc
+ */
+courseRouter.get("/get-course-by-id", getCourseById);
 
 courseRouter.get("/get-video-data", getVideoData);
 
