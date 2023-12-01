@@ -1,5 +1,9 @@
 const express = require("express");
-const { getPackageById, createPackageOrder } = require("../controllers/packageControllers");
+const {
+  getPackageById,
+  createPackageOrder,
+  updateIndex,
+} = require("../controllers/packageControllers");
 const requireAuth = require("../middleware/require-auth");
 
 const packageRouter = express.Router();
@@ -66,5 +70,7 @@ packageRouter.get("/get-package-by-id", getPackageById);
  */
 
 packageRouter.post("/create-package-order", requireAuth, createPackageOrder);
+
+packageRouter.post("/update-index", requireAuth, updateIndex);
 
 module.exports = packageRouter;
