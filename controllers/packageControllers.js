@@ -93,14 +93,22 @@ const updateIndex = async (req, res) => {
       .status(400)
       .json({ error: "Bad request", message: "Package id missing" });
 
-  const db = admin.firestore();
-  const packageRef = db.collection("packages").doc(packageId);
+  try {
+    const db = admin.firestore();
+    const packageRef = db.collection("packages").doc(packageId);
 
-  const response = await packageRef.update({
-    currentIndex: FieldValue.increment(1),
-  });
+    const FieldValue = admin.firestore.FieldValue;
 
-  return res.status(200).json({ message: "Index updated successfully!" });
+    const response = await packageRef.update({
+      currentIndex: FieldValue.increment(1),
+    });
+
+    return res.status(200).json({ message: "Index updated successfully!" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: error, message: "Internal server error" });
+  }
 };
 
 module.exports = { getPackageById, createPackageOrder, updateIndex };
