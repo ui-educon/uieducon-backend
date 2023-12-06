@@ -46,37 +46,33 @@ const createPackageOrder = async (req, res) => {
       .where("courseId", "==", courseId)
       .where("userId", "==", userId)
       .get();
-    if (packagesSnapshot.empty) {
-      try {
-        const currentDateTime = new Date();
-        const createPackageRef = packagesRef.doc();
-        const courseResData = courseDocRef.data();
-        const pricingINR = courseResData.pricingINR;
-        const durationInDays = courseResData?.durationInDays;
-        const packageExpiryDate = new Date();
-        packageExpiryDate.setUTCDate(
-          packageExpiryDate.getUTCDate() + durationInDays
-        );
-        const utcTimeString = packageExpiryDate.toISOString();
-        const newPackageBody = {
-          recordId: createPackageRef.id,
-          userId: userId,
-          courseId: courseId,
-          currentIndex: 0,
-          packageExpiryDate: utcTimeString,
-          packagePurchasedTime: currentDateTime.toISOString(),
-          packagePurchasedPrice: pricingINR,
-          orderCreationId: orderCreationId,
-          razorpayPaymentId: razorpayPaymentId,
-        };
-        await createPackageRef.set(newPackageBody);
-        res.status(200).send("Package Purchased Successfully");
-      } catch (error) {
-        console.log("error", error);
-        res.status(500).send(error);
-      }
-    } else {
-      return res.status(404).send("Course Already Purchased");
+    try {
+      const currentDateTime = new Date();
+      const createPackageRef = packagesRef.doc();
+      const courseResData = courseDocRef.data();
+      const pricingINR = courseResData.pricingINR;
+      const durationInDays = courseResData?.durationInDays;
+      const packageExpiryDate = new Date();
+      packageExpiryDate.setUTCDate(
+        packageExpiryDate.getUTCDate() + durationInDays
+      );
+      const utcTimeString = packageExpiryDate.toISOString();
+      const newPackageBody = {
+        recordId: createPackageRef.id,
+        userId: userId,
+        courseId: courseId,
+        currentIndex: 0,
+        packageExpiryDate: utcTimeString,
+        packagePurchasedTime: currentDateTime.toISOString(),
+        packagePurchasedPrice: pricingINR,
+        orderCreationId: orderCreationId,
+        razorpayPaymentId: razorpayPaymentId,
+      };
+      await createPackageRef.set(newPackageBody);
+      res.status(200).send("Package Purchased Successfully");
+    } catch (error) {
+      console.log("error", error);
+      res.status(500).send(error);
     }
   } else {
     return res.status(404).send("Invalid Course Id");
