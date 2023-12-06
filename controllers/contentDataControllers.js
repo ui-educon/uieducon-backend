@@ -21,7 +21,7 @@ const getVideoData = async (req, res) => {
       .json({ error: "Bad request", message: "Cannot process this origin" });
 
   let client = new Vimeo(
-    process.env.CLIENT_ID,
+    process.env.VIMEO_CLIENT_ID,
     process.env.CLIENT_SECRET,
     process.env.PERSONAL_ACCESS_TOKEN
   );
