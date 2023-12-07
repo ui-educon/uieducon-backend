@@ -1,3 +1,4 @@
+const nodemailer = require("nodemailer");
 const admin = require("firebase-admin");
 const { decodeAccessToken } = require("../utils/firebase-utils");
 
@@ -83,7 +84,7 @@ const createPackageOrder = async (req, res) => {
   }
 };
 
-const updateIndex = async (req, res) => {
+const updateIndex = async (req, res, next) => {
   const { packageId } = req.body;
 
   console.log(packageId);
@@ -96,19 +97,69 @@ const updateIndex = async (req, res) => {
   try {
     const db = admin.firestore();
     const packageRef = db.collection("packages").doc(packageId);
+    const packageRes = (await packageRef.get()).data();
+    const courseref = db.collection("courses").doc(packageRes.courseId);
+    const courseRes = (await courseref.get()).data();
 
-    const FieldValue = admin.firestore.FieldValue;
+    if (packageRes.currentIndex < courseRes.sequence.length - 1) {
+      const FieldValue = admin.firestore.FieldValue;
 
-    const response = await packageRef.update({
-      currentIndex: FieldValue.increment(1),
-    });
+      const response = await packageRef.update({
+        currentIndex: FieldValue.increment(1),
+      });
 
-    return res.status(200).json({ message: "Index updated successfully!" });
+      return res.status(200).json({ message: "Index updated successfully!" });
+    } else next();
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
-      .json({ error: error, message: "Internal server error" });
+      .json({ error: error.response, message: "Internal server error" });
   }
 };
 
-module.exports = { getPackageById, createPackageOrder, updateIndex };
+const courseCompletion = async (req, res) => {
+  const accessToken = req.headers.authorization;
+  const decodedToken = await decodeAccessToken(accessToken);
+  const uuid = decodedToken.user_id;
+
+  try {
+    const db = admin.firestore();
+    const userRef = db.collection("users").doc(uuid);
+    const userRes = (await userRef.get()).data();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+        user: "uieducon23@gmail.com",
+        pass: "nubr knjm hmvw xhgm",
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: '"Ui Educon" uieducon23@gmail.com', // sender address
+      to: userRes.email, // list of receivers
+      subject: "Course Completion message", // Subject line
+      text: "You have successfully completed the course.", // plain text body
+      html: "<b>Hello world?</b>", // html body
+    });
+
+    res
+      .status(200)
+      .json({ message_id: info.messageId, message: "Mail sent successfully!" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error, message: "Internal server error" });
+  }
+};
+
+module.exports = {
+  getPackageById,
+  createPackageOrder,
+  updateIndex,
+  courseCompletion,
+};

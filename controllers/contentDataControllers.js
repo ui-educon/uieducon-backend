@@ -39,6 +39,7 @@ const getVideoData = async (req, res) => {
         }
 
         let playableLink = "";
+        return res.status(200).json({ link: body.player_embed_url });
         for (let i = 0; i < body.files.length; i++) {
           const element = body.files[i];
           if (element.quality == "hls") {

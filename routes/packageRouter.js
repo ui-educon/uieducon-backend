@@ -3,6 +3,7 @@ const {
   getPackageById,
   createPackageOrder,
   updateIndex,
+  courseCompletion,
 } = require("../controllers/packageControllers");
 const requireAuth = require("../middleware/require-auth");
 
@@ -71,6 +72,6 @@ packageRouter.get("/get-package-by-id", getPackageById);
 
 packageRouter.post("/create-package-order", requireAuth, createPackageOrder);
 
-packageRouter.post("/update-index", requireAuth, updateIndex);
+packageRouter.post("/update-index", requireAuth, updateIndex, courseCompletion);
 
 module.exports = packageRouter;
