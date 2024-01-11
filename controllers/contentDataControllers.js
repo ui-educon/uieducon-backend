@@ -1,5 +1,6 @@
 const { Vimeo } = require("vimeo");
 const dotenv = require("dotenv");
+const { google } = require("googleapis");
 
 dotenv.config();
 
@@ -56,4 +57,43 @@ const getVideoData = async (req, res) => {
   }
 };
 
-module.exports = { getVideoData };
+const getytVideoData = async (req, res) => {
+  const youtube = google.youtube({
+    version: "v3",
+    auth: "AIzaSyCOFQnr5gTsCbDfYORyXq7v65wK8l7-kqU", // Replace with your API key
+  });
+
+  try {
+    const { videoId } = req.params;
+
+    // Make a request to the YouTube API to get video details
+    const response = await youtube.videos.list({
+      part: "snippet,contentDetails",
+      id: videoId,
+    });
+
+    // Check if the video is private
+    const video = response.data.items[0];
+    if (!video) {
+      return res.status(404).json({ error: "Video not found" });
+    }
+
+    const isPrivate = video.status.privacyStatus === "private";
+
+    if (isPrivate) {
+      return res
+        .status(403)
+        .json({ error: "Private video. Authentication required." });
+    }
+
+    // Generate a playable URL
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+    res.json({ videoUrl });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+module.exports = { getVideoData, getytVideoData };
