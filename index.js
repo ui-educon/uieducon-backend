@@ -20,7 +20,12 @@ const admin = require("firebase-admin");
 const serviceAccount = require("./firebase.config");
 
 // Error Handler inports
-const { NotFoundErrorHandler, ServerErrorHandler } = require("./middleware/errors");
+const {
+  NotFoundErrorHandler,
+  ServerErrorHandler,
+} = require("./middleware/errors");
+
+dotenv.config();
 
 // Initialize Firebase App
 admin.initializeApp({
@@ -28,7 +33,6 @@ admin.initializeApp({
 });
 
 // Configure app
-dotenv.config();
 const swaggerSpecs = swaggerJsdoc(swaggerOptions);
 const app = express();
 const PORT = process.env.PORT || 7000;
