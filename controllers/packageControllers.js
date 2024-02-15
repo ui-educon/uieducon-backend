@@ -27,9 +27,9 @@ const getPackageById = async (req, res) => {
 
 const createPackageOrder = async (req, res) => {
   const db = admin.firestore();
-  const authToken = req.headers.authorization;
-  const decodedToken = await decodeAccessToken(authToken);
-  const userId = decodedToken.uid;
+  // const authToken = req.headers.authorization;
+  // const decodedToken = await decodeAccessToken(authToken);
+  const userId = req.body.uid;
   const courseId = req.body.course_id;
   const orderCreationId = req.body.order_creation_id;
   const razorpayPaymentId = req.body.razorpay_payment_id;

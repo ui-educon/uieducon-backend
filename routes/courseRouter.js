@@ -3,7 +3,10 @@ const {
   getAllCourses,
   getCourseById,
 } = require("../controllers/courseControllers");
-const { getVideoData } = require("../controllers/contentDataControllers");
+const {
+  getVideoData,
+  getytVideoData,
+} = require("../controllers/contentDataControllers");
 
 const courseRouter = express.Router();
 
@@ -44,5 +47,7 @@ courseRouter.get("/get-all-courses", getAllCourses);
 courseRouter.get("/get-course-by-id", getCourseById);
 
 courseRouter.get("/get-video-data", getVideoData);
+
+courseRouter.get("/gettytVideo", getytVideoData);
 
 module.exports = courseRouter;
