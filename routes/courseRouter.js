@@ -2,10 +2,13 @@ const express = require("express");
 const {
   getAllCourses,
   getCourseById,
+  getCourseCompletionCertificate,
 } = require("../controllers/courseControllers");
 const {
   getVideoData,
   getytVideoData,
+  videoDataApp,
+  getPlayableLink,
 } = require("../controllers/contentDataControllers");
 
 const courseRouter = express.Router();
@@ -48,6 +51,10 @@ courseRouter.get("/get-course-by-id", getCourseById);
 
 courseRouter.get("/get-video-data", getVideoData);
 
-courseRouter.get("/gettytVideo", getytVideoData);
+courseRouter.get("/gettytVideo", videoDataApp);
+
+courseRouter.get("/get-playable-link", getPlayableLink);
+
+courseRouter.get("/getCertificate", getCourseCompletionCertificate);
 
 module.exports = courseRouter;

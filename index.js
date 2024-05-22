@@ -9,6 +9,7 @@ const userRouter = require("./routes/userRouter");
 const courseRouter = require("./routes/courseRouter");
 const packageRouter = require("./routes/packageRouter");
 const orderRouter = require("./routes/orderRouter");
+const adminRouter = require("./routes/adminRouter");
 
 // Swagger Imports
 const swaggerUi = require("swagger-ui-express");
@@ -50,6 +51,7 @@ app.use("/user", userRouter);
 app.use("/course", courseRouter);
 app.use("/package", packageRouter);
 app.use("/order", orderRouter);
+app.use("/admin", adminRouter);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 404: Not found

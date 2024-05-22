@@ -105,7 +105,10 @@ const updateIndex = async (req, res, next) => {
       });
 
       return res.status(200).json({ message: "Index updated successfully!" });
-    } else next();
+    } else {
+      // next()
+      return res.status(200).json({ message: "Course completed!!" });
+    }
   } catch (error) {
     console.log(error);
     return res
