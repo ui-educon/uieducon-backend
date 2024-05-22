@@ -2,6 +2,11 @@ const { Vimeo } = require("vimeo");
 const dotenv = require("dotenv");
 const { google } = require("googleapis");
 
+const pkg = require("ytdl-core");
+const { default: axios } = require("axios");
+
+const { getInfo } = pkg;
+
 dotenv.config();
 
 const getVideoData = async (req, res) => {
@@ -96,4 +101,155 @@ const getytVideoData = async (req, res) => {
   }
 };
 
-module.exports = { getVideoData, getytVideoData };
+const get_id_origin = (link) => {
+  let videoid = link.split("/");
+  let origin = videoid[2];
+  videoid = videoid[videoid.length - 1];
+  return { videoid, origin };
+};
+
+const videoDataApp = async (req, res) => {
+  const { onlineLink } = req.query;
+  if (!onlineLink)
+    return res.status(400).json({
+      messsage: "Bad request",
+      error: "onlineLink missing",
+    });
+  else {
+    const { videoid, origin } = get_id_origin(onlineLink);
+    const qualitiesRes = {};
+    try {
+      if (origin == "www.youtube.com" || origin == "youtu.be") {
+        const ytVideoData = await getInfo(`https://${origin}/${videoid}`);
+        let qualityObj = {
+          url: "",
+          quality_label: "",
+          width: 0,
+          height: 0,
+          fps: 0,
+        };
+        ytVideoData.player_response.streamingData.formats.forEach((quality) => {
+          if (
+            quality.mimeType.includes("video/mp4") &&
+            quality.width > qualityObj.width
+          ) {
+            qualityObj = {
+              url: quality.url ?? "",
+              quality_label: quality.qualityLabel ?? "",
+              width: quality.width ?? 0,
+              height: quality.height ?? 0,
+              fps: quality.fps ?? 0,
+            };
+            // qualitiesRes[quality.qualityLabel] = qualityObj;
+          }
+        });
+        return res.status(200).json({
+          status: 200,
+          messgage: "Data fetched successfully",
+          data: qualityObj,
+        });
+      } else if (origin == "vimeo.com") {
+        let client = new Vimeo(
+          process.env.CLIENT_ID,
+          process.env.CLIENT_SECRET,
+          process.env.PERSONAL_ACCESS_TOKEN
+        );
+        client.request(
+          {
+            method: "GET",
+            hostname: "api.vimeo.com",
+            path: `/videos/${videoid}`,
+          },
+          async function (error, body, status_code, headers) {
+            if (error) {
+              return res.status(status_code).json({
+                status: status_code,
+                // errorCode: ERROR_CODES.SERVER_ERROR,
+              });
+            }
+            body.files.forEach((quality) => {
+              const qualityObj = {
+                url: quality.link ?? "",
+                quality_label: quality.rendition ?? "",
+                width: quality.width ?? 0,
+                height: quality.height ?? 0,
+                fps: quality.fps ?? 0,
+              };
+              qualitiesRes[quality.rendition] = qualityObj;
+            });
+            return res.status(200).json({
+              status: 200,
+              message: "Data fetched successfully",
+              data: Object.values(qualitiesRes),
+            });
+          }
+        );
+      } else
+        return res.status(200).json({
+          status: 200,
+          message: "Data fetched successfully",
+          data: [
+            {
+              url: onlineLink,
+              quality_label: "",
+              width: 0,
+              height: 0,
+              fps: 0,
+            },
+          ],
+        });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        status: 500,
+        message: "Internal server Error",
+        // errorCode: ERROR_CODES.SERVER_ERROR,
+      });
+    }
+  }
+};
+
+const getPlayableLink = async (req, res) => {
+  const { videoId } = req.query;
+  if (!videoId)
+    return res.status(400).json({
+      messsage: "Bad request",
+      error: "video id missing",
+    });
+  else {
+    try {
+      const response = await axios({
+        baseURL: "https://app.tpstreams.com",
+        method: "post",
+        url: `/api/v1/${process.env.ORG_CODE}/assets/${videoId}/access_tokens`,
+        data: JSON.stringify({
+          expires_after_first_usage: true,
+        }),
+        headers: {
+          Authorization: `Token ${process.env.TP_AUTH_TOKEN}`,
+        },
+      });
+      console.log(response.data);
+      let playableLink = response.data.results[0].playback_url;
+      for (const element of response.data.results) {
+        if (element.expires_after_first_usage && element.status == "Active") {
+          playableLink = element.playback_url;
+          break;
+        }
+      }
+      res.status(200).json({
+        playableLink: playableLink,
+        // thumbnail: response.data.video.cover_thumbnail_url,
+      });
+    } catch (error) {
+      res.status(500).json({ error: error });
+    }
+  }
+};
+
+module.exports = {
+  getVideoData,
+  getytVideoData,
+  videoDataApp,
+  getPlayableLink,
+};
