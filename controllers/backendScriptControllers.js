@@ -3,6 +3,8 @@ const admin = require("firebase-admin"); // Install with: npm install firebase-a
 const {
   ResearchMethodologies,
   ResearchMethodologiesCourse,
+  MLDL,
+  MLDLCourse,
 } = require("../seed/resourcesData");
 
 async function pushElementsToFirestore(elements, collection) {
@@ -41,10 +43,7 @@ async function pushElementsToFirestore(elements, collection) {
 
 const pushResources = async (req, res) => {
   try {
-    // const response = await pushElementsToFirestore(
-    //   ResearchMethodologiesCourse,
-    //   "courses"
-    // );
+    // const response = await pushElementsToFirestore(MLDLCourse, "courses");
     // res.status(200).json({ data: response });
     res.send("Exit with 0 operations");
   } catch (error) {

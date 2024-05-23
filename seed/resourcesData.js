@@ -288,6 +288,158 @@ const ResearchMethodologies = [
   },
 ];
 
+const MLDL = [
+  {
+    desc: "This tutorial serves as a comprehensive introduction to the field of Machine Learning (ML), covering essential concepts, applications, and methodologies. Begin by understanding the fundamentals of ML and its vast application areas across various industries. Clarify the distinctions between Artificial Intelligence (AI), Machine Learning (ML), and Deep Learning (DL) to gain insights into their respective domains and capabilities. Explore different types of ML, including supervised, unsupervised, and reinforcement learning, along with their applications and use cases. Dive into the classification and regression techniques used in ML for predicting discrete and continuous outcomes, respectively. Understand the principles of unsupervised learning for discovering patterns and structures in unlabeled data. Learn about the ML pipeline and the step-by-step process involved in building and deploying ML models. Delve into instance-based and model-based learning approaches and understand their advantages and limitations. Finally, explore the essential steps in Exploratory Data Analysis (EDA) for gaining insights and preparing data for ML tasks. By the end of this tutorial, you'll have a solid foundation in Machine Learning concepts and methodologies, setting the stage for further exploration and learning in this dynamic field.",
+    recordId: "",
+    title: "A Comprehensive Introduction to Machine Learning",
+    type: "video",
+    videoID: "5yfqdu6Px9J",
+  },
+  {
+    desc: "Delve into the world of data visualization with Matplotlib in this comprehensive tutorial. Learn how to create simple 2D plots and customize their features to enhance clarity and visual appeal. Explore advanced plotting techniques such as creating subplots to visualize multiple datasets simultaneously. Dive into different types of plots including scatter plots, bar plots, histograms, pie plots, stem plots, and box plots to represent different types of data effectively. Understand how to save plots in various formats for further analysis or presentation. Additionally, explore 3D plotting capabilities in Matplotlib to visualize complex data in three dimensions. Finally, put your skills to the test with exercises designed to reinforce your understanding of Matplotlib concepts. By the end of this tutorial, you'll be proficient in creating and customizing a wide range of plots using Matplotlib for data visualization purposes.",
+    recordId: "",
+    title: "Mastering Data Visualization with Matplotlib",
+    type: "video",
+    videoID: "6zkZF7U2b3d",
+  },
+  {
+    desc: "Explore the capabilities of Seaborn for data visualization in this comprehensive tutorial. Get introduced to Seaborn and understand its advantages compared to Matplotlib. Learn how Seaborn simplifies the process of creating visually appealing plots with concise syntax and built-in themes. Delve into categorical plots in Seaborn, which allow for the visualization of categorical data with ease. Understand how to create various types of categorical plots such as bar plots, count plots, and box plots to gain insights into your data distribution. By the end of this tutorial, you'll be equipped with the knowledge and skills to leverage Seaborn for effective data visualization in Python.",
+    recordId: "",
+    title: "Mastering Data Visualization with Seaborn",
+    type: "video",
+    videoID: "C6Chn5uFE5k",
+  },
+  {
+    desc: "Dive into the world of Pandas, a powerful library for data manipulation and analysis in Python. Learn about the fundamentals of Pandas, including its installation process and key advantages for data handling tasks. Explore various applications of Pandas across different industries, from finance and healthcare to academia and research. Understand the data structures provided by Pandas, such as Series and DataFrame, and their roles in organizing and analyzing data efficiently. Discover how to load data from external files such as CSV or Excel into Pandas DataFrames, and how to save data back into these formats. By the end of this course, you'll be equipped with the knowledge and skills to leverage Pandas for your data processing needs.",
+    recordId: "",
+    title: "Introduction to Pandas: Data Manipulation and Analysis in Python",
+    type: "video",
+    videoID: "3sQQCrbY5xp",
+  },
+  {
+    desc: "Delve into advanced data manipulation techniques with Pandas in this comprehensive tutorial. Explore how to slice and dice DataFrames to extract specific rows and columns, delete unwanted rows or columns, and add new columns to enhance data analysis. Learn about DataFrame concatenation for combining multiple DataFrames vertically or horizontally. Dive into statistical functions available in Pandas for computing summary statistics and exploring data distributions. Finally, master conditional selection to filter rows or columns based on specified conditions, enabling targeted data analysis and exploration. By the end of his tutorial, you'll be equipped with the skills to perform sophisticated data manipulation and analysis tasks using Pandas.",
+    recordId: "",
+    title:
+      "Pandas Data Manipulation: Slicing, Concatenation, and Statistical Analysis",
+    type: "video",
+    videoID: "97qAk86E2KJ",
+  },
+  {
+    desc: "This comprehensive introduction to NumPy covers essential topics including an overview of NumPy, its necessity in scientific computing, comparisons between NumPy arrays and Python lists, speed tests demonstrating NumPy's efficiency, and its usability for various data manipulation tasks. Learn how to install NumPy, create NdArray and multi-dimensional arrays, explore different data types supported by NumPy arrays, and understand their properties and operations. Whether you're new to NumPy or looking to deepen your knowledge, this course will equip you with the foundational skills needed for efficient numerical computing in Python.",
+    recordId: "5a8zCdCgmd9",
+    title: "Mastering NumPy: A Comprehensive Introduction",
+    type: "video",
+    videoID: "",
+  },
+  {
+    desc: "Delve into the advanced features of NumPy arrays with this comprehensive course. Learn about sorting techniques, various methods for creating NumPy arrays, and the concept of broadcasting for efficient array operations. Explore statistical functions and random number generation capabilities built into NumPy for data analysis and simulation tasks. Finally, discover how NumPy can be used to solve linear equations, making it a powerful tool for scientific computing and numerical analysis. Gain practical insights into leveraging NumPy's advanced functionalities for a wide range of applications.",
+    recordId: "",
+    title: "Exploring Advanced Features of NumPy Arrays",
+    type: "video",
+    videoID: "4xKbEgGzxFE",
+  },
+  {
+    desc: "Dive into the world of Exploratory Data Analysis (EDA) with this comprehensive tutorial. Learn about the importance of EDA in understanding data characteristics, patterns, and relationships. Explore various techniques and visualizations used in EDA to uncover insights and make informed decisions. Understand how to perform EDA on real-world datasets, including the Titanic dataset, to gain insights into passenger demographics, survival rates, and factors influencing survival. By the end of this tutorial, you'll have a solid understanding of EDA principles and techniques, along with practical experience in applying EDA to analyze datasets effectively.",
+    recordId: "",
+    title: "Exploratory Data Analysis (EDA)",
+    type: "video",
+    videoID: "9BDtsJGqjsj",
+  },
+  {
+    desc: "This tutorial provides a comprehensive overview of supervised learning and linear regression techniques in Python. Begin by learning about the different types of machine learning, focusing on supervised learning where models are trained on labeled data. Dive into linear regression, a fundamental supervised learning algorithm used for modeling the relationship between a dependent variable and one or more independent variables. Explore various types of linear regression, including simple linear regression and multiple linear regression, and understand their applications and characteristics. Learn how to evaluate the performance of regression models using different evaluation metrics and techniques such as k-fold cross-validation. Finally, gain practical coding experience by implementing",
+    recordId: "",
+    title: "Supervised Learning and Linear Regression in Python",
+    type: "video",
+    videoID: "6CMdxdU6QPN",
+  },
+  {
+    desc: "This tutorial provides a comprehensive guide to regression analysis in machine learning, focusing on multiple regression, polynomial regression, and model optimization. Learn how to perform multiple regression analysis to predict a target variable using multiple predictor variables. Understand the concepts of features and labels in the context of regression modeling, and explore techniques for selecting and preprocessing features for regression tasks. Dive into polynomial regression, a nonlinear regression technique that captures nonlinear relationships between variables by fitting polynomial functions to the data. Finally, explore methods for optimizing regression models to achieve optimal performance and generalization. By the end of this tutorial, you'll have a solid understanding of regression analysis techniques and be equipped to apply them effectively to real-world datasets.",
+    recordId: "",
+    title: "Regression Analysis in Machine Learning",
+    type: "video",
+    videoID: "4mSCug9m5Bb",
+  },
+  {
+    desc: "Delve into logistic regression, a versatile algorithm widely used for binary classification tasks, in this comprehensive tutorial. Explore its applications across various domains, including marketing, finance, healthcare, and more. Understand the different types of logistic regression models, such as binary logistic regression, multinomial logistic regression, and ordinal logistic regression, and learn when to use each type based on the nature of the problem. Follow step-by-step instructions to build and train a logistic regression model to predict churn, a common business problem in customer retention. Dive into the training process, including data preprocessing, model fitting, and evaluation. Visualize the training process by plotting the cost function to monitor model performance. Practice implementing logistic regression in Google Colab, a popular platform for collaborative coding and machine learning. Finally, learn how to assess model performance using a confusion matrix to analyze classification results. By the end of this tutorial, you'll be equipped with the knowledge and skills to leverage logistic regression for predictive modeling tasks and churn prediction in real-world scenarios.",
+    recordId: "",
+    title: "Logistic Regression: Applications and Training Techniques",
+    type: "video",
+    videoID: "B4mybmjjh8b",
+  },
+  {
+    desc: "This tutorial provides a comprehensive overview of the K-Nearest Neighbors (KNN) algorithm, a popular non-parametric method used for classification and regression tasks. Learn about the underlying principles of the KNN algorithm and how it makes predictions based on the majority class or average value of the k-nearest neighbors in the feature space. Understand how to determine the optimum value of k through techniques such as cross-validation and grid search. Follow along with hands-on examples using Google Colab, a collaborative platform for coding and machine learning, to implement the KNN algorithm and apply it to real-world datasets. By the end of this tutorial, you'll have a solid understanding of the KNN algorithm and be able to use it effectively for classification and regression tasks.",
+    recordId: "",
+    title: "K-Nearest Neighbors (KNN) Algorithm",
+    type: "video",
+    videoID: "5HJPdBRMsGC",
+  },
+  {
+    desc: "This tutorial provides an in-depth exploration of the Naive Bayes algorithm, a popular classification algorithm based on Bayes' theorem. Learn about the fundamental concepts of Bayes' theorem and how it forms the basis of the Naive Bayes algorithm. Understand the working principles of Naive Bayes, including the assumption of feature independence and the calculation of class probabilities. Explore the advantages and disadvantages of Naive Bayes, including its simplicity, scalability, and handling of categorical data, as well as its sensitivity to feature independence assumptions. Discover various applications of Naive Bayes in real-world scenarios, such as email spam filtering, sentiment analysis, and document categorization, along with different types of Naive Bayes classifiers, including Gaussian, Multinomial, and Bernoulli Naive Bayes. By the end of this tutorial, you'll have a comprehensive understanding of the Naive Bayes algorithm and its practical applications in classification tasks.",
+    recordId: "",
+    title: "Naive Bayes Algorithm: Theory and Applications",
+    type: "video",
+    videoID: "4yGPNYGhafa",
+  },
+  {
+    desc: "This tutorial provides a comprehensive guide to decision trees and the Random Forest classifier, powerful algorithms used for classification and regression tasks. Learn about the fundamental concepts of decision trees, including entropy, information gain, and attributes, and how they influence the construction of decision trees. Understand the advantages and disadvantages of decision trees, including their interpretability, ease of use, and susceptibility to overfitting. Explore techniques for mitigating overfitting in decision trees, such as pruning and setting maximum depth limits. Dive into the Random Forest classifier, a popular ensemble learning method that combines multiple decision trees to improve predictive accuracy and robustness. By the end of this tutorial, you'll have a solid understanding of decision trees and the Random Forest classifier, along with practical knowledge of how to apply them to real-world classification problems.",
+    recordId: "",
+    title: "Decision Trees and Random Forest Classifier",
+    type: "video",
+    videoID: "E77XSD8SNq4",
+  },
+  {
+    desc: "Delve into unsupervised learning and its key concepts. Learn about various unsupervised learning algorithms, their pros and cons, and the types of clustering. Explore clustering algorithms and understand how to evaluate cluster quality. Enhance your machine learning knowledge with practical insights and examples. Don't miss this opportunity to master unsupervised learning techniques.",
+    recordId: "",
+    title: "Understanding Unsupervised Learning: A Live Class",
+    type: "video",
+    videoID: "ADfX3RP2C8P",
+  },
+  {
+    desc: "Dive into the fascinating world of Machine Learning (ML) and Neural Networks. Understand the fundamentals of Artificial Neural Networks (ANN) and how they differ from conventional computers. Explore the structure and function of biological neurons and their artificial counterparts. Learn about the McCulloch-Pitts Neuron, Rosenblatt's Perceptron Model, activation functions, and the perceptron model. Gain insights into various learning rules that guide the training of neural networks. This comprehensive introduction will equip you with a solid foundation in ML and neural networks.",
+    recordId: "",
+    title: "Introduction to Machine Learning and Neural Networks",
+    type: "video",
+    videoID: "B7sh89qhRHj",
+  },
+  {
+    desc: "Explore the core concepts and architecture of Deep Neural Networks (DNN). Understand data augmentation techniques and their role in enhancing model performance. Learn about generalization and regularization methods to prevent overfitting. Discover the functionality of autoencoders and delve into various applications of deep learning. Finally, grasp the concept of end-to-end learning and its significance in modern AI systems.",
+    recordId: "",
+    title: "Deep Neural Networks: Fundamentals and Architecture",
+    type: "video",
+    videoID: "Z7Crqx3GCpP",
+  },
+  {
+    desc: "Discover the world of deep learning algorithms and architectures, starting with Convolutional Neural Networks (CNNs) for image processing and Recurrent Neural Networks (RNNs) for sequential data. Explore Long Short Term Memory (LSTM) networks for handling long-term dependencies, Generative Adversarial Networks(GANs) for generating realistic data, and Residual Neural Networks (ResNets) for tackling deep learning challenges. Gain insights into the unique features and applications of each architecture.",
+    recordId: "",
+    title: "Deep Learning Algorithms and Architectures",
+    type: "video",
+    videoID: "NJY6ZcMHXdb",
+  },
+  {
+    desc: "Uncover the strategies and applications of deep learning for image analysis. Learn the general approach to implementing models using Convolutional Neural Networks (CNNs) and explore their use in object recognition, image classification, and image segmentation. Additionally, discover how Generative Adversarial Networks (GANs) are employed for advanced object recognition.",
+    recordId: "",
+    title: "Deep Learning for Image Analysis",
+    type: "video",
+    videoID: "7xh6mC7jHzg",
+  },
+  {
+    desc: "Discover the innovative application of deep learning in test generation using Recurrent Neural Networks (RNNs). Learn how RNNs can create meaningful and contextually accurate test data, improving automated testing processes and enhancing the efficiency of software development and quality assurance.",
+    recordId: "",
+    title: "Test Generation with Recurrent Neural Networks",
+    type: "video",
+    videoID: "62GHqnK9Ssj",
+  },
+  {
+    desc: " Explore the process of deploying machine learning models and pipelines in production environments using Flask, a popular web framework in Python. Learn about serialization techniques such as pickle and joblib for saving trained models and pipelines. Dive into building a web application with Flask to serve predictions from your deployed models, allowing users to interact with your machine learning solutions in real-time. Gain practical insights into deploying robust and scalable machine learning applications for various use cases.",
+    recordId: "",
+    title:
+      "Deploying Machine Learning Models and Pipelines with Flask: Using pickle and joblib",
+    type: "video",
+    videoID: "3ubMCKpmtMg",
+  },
+];
+
 const ResearchMethodologiesSeq = [
   "t8URrJCC8k99uuwAwi6e",
   "U9gb1x1RVIqvsPnAqsMm",
@@ -331,6 +483,30 @@ const ResearchMethodologiesSeq = [
   "DdNEeHRuuHQBT76pxmFN",
 ];
 
+const MLDLSeq = [
+  "fpocl7CiFx88JwANrhzi",
+  "jvaV3bambvZVE2H5HQ2I",
+  "SA4wG39lXMVLKUhnrvzO",
+  "VaSEyjrqwyDmx5uukOUb",
+  "mNm8ZBeUsTbFCrCdjPsa",
+  "VESvN1cq5r3QNfaMUK67",
+  "OwQPBaFqebdFf1z1VRYC",
+  "4h04alruHEzC1si5EcAM",
+  "v7o0MdXVTfe4ueUA5vAi",
+  "4NXmt0IS0r1QOMNLGDj0",
+  "bOqLwOJxidHEucl2pmv0",
+  "9EO0dJSFg2bOclcqJXEL",
+  "sTdkL1eK8MtJcQEDHUla",
+  "p8kPqDoWtrrwgYe4Bocc",
+  "EG7WTkwq8j8pu8iIZ9sA",
+  "n8XPs5sGBj9tvqDKC1vh",
+  "O1F1444sXRTZt74S9BUB",
+  "C1JpA7p3rVOp1dDIBwA8",
+  "75iT9OPg07MltDybVPLR",
+  "OLnGEIS96X7bipc5KquN",
+  "x3LKy7oU3VX1YWOyxJWq",
+];
+
 const ResearchMethodologiesCourse = [
   {
     description: "Research Methodologies",
@@ -344,4 +520,22 @@ const ResearchMethodologiesCourse = [
   },
 ];
 
-module.exports = { ResearchMethodologies, ResearchMethodologiesCourse };
+const MLDLCourse = [
+  {
+    description: "Machine Learning and Deep Learning using Python",
+    durationInDays: 365,
+    name: "Machine Learning and Deep Learning using Python",
+    pricingINR: 750,
+    recordId: "",
+    sequence: MLDLSeq,
+    thumbnailUrl:
+      "https://firebasestorage.googleapis.com/v0/b/uieducon-df5c7.appspot.com/o/courseThumbnails%2FMLDL.svg?alt=media&token=072b3da7-612c-43dc-8649-51d4a159dd07",
+  },
+];
+
+module.exports = {
+  ResearchMethodologies,
+  ResearchMethodologiesCourse,
+  MLDL,
+  MLDLCourse,
+};

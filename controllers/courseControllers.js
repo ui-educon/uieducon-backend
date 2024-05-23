@@ -2,6 +2,7 @@ const admin = require("firebase-admin");
 const { decodeAccessToken } = require("../utils/firebase-utils");
 const PDFDocument = require("pdfkit");
 const { PassThrough } = require("stream");
+const { default: axios } = require("axios");
 
 const getAllCourses = async (req, res) => {
   const db = admin.firestore();
@@ -64,10 +65,9 @@ const getCourseCompletionCertificate = async (req, res) => {
     const uuid = decodedToken.user_id;
 
     const db = admin.firestore();
-    const userSnapshot = await db
-      .collection("users")
-      .where("userId", "==", uuid)
-      .get();
+    const userData = (await db.collection("users").doc(uuid).get()).data();
+
+    // const userData = userSnapshot.data();
 
     // console.log(userSnapshot);
 
@@ -81,79 +81,38 @@ const getCourseCompletionCertificate = async (req, res) => {
         .status(400)
         .json({ error: "Bad request", message: "Complete the course!!" });
 
-    const doc = new PDFDocument();
+    const doc = new PDFDocument({
+      layout: "landscape",
+      size: "A4",
+    });
     const stream = new PassThrough();
 
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename=certificate_${"Sandeep"}.pdf`
+      `attachment; filename=certificate_${userData.name}.pdf`
     );
     res.setHeader("Content-Type", "application/pdf");
 
     doc.pipe(stream);
 
-    // Certificate Design
-    doc.rect(0, 0, doc.page.width, doc.page.height).fill("#fff");
-    doc.fillColor("#000");
-
-    // Certificate title
-    doc.fontSize(30).text("Certificate of Achievement", {
-      align: "center",
-      underline: true,
+    let image = await axios.get(courseRes.certificateTemplate, {
+      responseType: "arraybuffer",
     });
 
-    // Add some space
-    doc.moveDown(3);
-
-    // Add name
-    doc.fontSize(20).fillColor("#FF5733").text(`This is to certify that`, {
-      align: "center",
+    doc.image(image.data, 0, 0, {
+      width: doc.page.width,
+      height: doc.page.height,
     });
 
-    doc.moveDown(1);
-
-    doc.fontSize(25).fillColor("#FF5733").text("Sandeep", {
-      align: "center",
-      underline: true,
-    });
-
-    // Add some space
-    doc.moveDown(2);
-
-    // Add description
-    doc
-      .fontSize(18)
-      .fillColor("#000")
-      .text(`has successfully completed the course`, {
-        align: "center",
-      });
-
-    doc.moveDown(1);
-
-    doc
-      .fontSize(18)
-      .fillColor("#000")
-      .text(`"Node.js and PDFKit for Beginners"`, {
-        align: "center",
-        italic: true,
-      });
-
-    // Add some space
-    doc.moveDown(5);
-
-    // Add details
-    doc
-      .fontSize(16)
-      .fillColor("#000")
-      .text(`Issued on ${new Date().toLocaleDateString()}`, {
-        align: "center",
-      });
+    doc.moveDown(15);
+    doc.fontSize(36).fillColor("#000").text(userData.name);
 
     // Finalize the PDF and end the stream
     doc.end();
 
     stream.pipe(res);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "Interval server error",
     });
