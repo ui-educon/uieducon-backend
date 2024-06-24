@@ -104,8 +104,10 @@ const getCourseCompletionCertificate = async (req, res) => {
       height: doc.page.height,
     });
 
-    doc.moveDown(15);
-    doc.fontSize(36).fillColor("#000").text(userData.name);
+    doc.moveDown(13);
+    doc.fontSize(36).fillColor("#000").text(userData.name, {
+      align: "center",
+    });
 
     // Finalize the PDF and end the stream
     doc.end();
