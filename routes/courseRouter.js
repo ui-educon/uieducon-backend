@@ -4,12 +4,7 @@ const {
   getCourseById,
   getCourseCompletionCertificate,
 } = require("../controllers/courseControllers");
-const {
-  getVideoData,
-  getytVideoData,
-  videoDataApp,
-  getPlayableLink,
-} = require("../controllers/contentDataControllers");
+const { getPlayableLink } = require("../controllers/contentDataControllers");
 
 const courseRouter = express.Router();
 
@@ -49,10 +44,25 @@ courseRouter.get("/get-all-courses", getAllCourses);
  */
 courseRouter.get("/get-course-by-id", getCourseById);
 
-courseRouter.get("/get-video-data", getVideoData);
-
-courseRouter.get("/gettytVideo", videoDataApp);
-
+/**
+ * @swagger
+ * /course/get-course-by-id:
+ *   get:
+ *     summary: Get all course doc by id
+ *     tags:
+ *       - course
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: videoId
+ *         description: corresponding video id in tpstreams
+ *         in: query
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Playable link
+ */
 courseRouter.get("/get-playable-link", getPlayableLink);
 
 courseRouter.get("/getCertificate", getCourseCompletionCertificate);

@@ -51,7 +51,7 @@ app.use("/user", userRouter);
 app.use("/course", courseRouter);
 app.use("/package", packageRouter);
 app.use("/order", orderRouter);
-app.use("/admin", adminRouter);
+// app.use("/admin", adminRouter);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 404: Not found
