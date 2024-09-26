@@ -1,36 +1,10 @@
 const admin = require("firebase-admin"); // Install with: npm install firebase-admin
 
 const {
-  ResearchMethodologies,
-  ResearchMethodologiesCourse,
-  MLDL,
-  MLDLCourse,
-  PythonDataScienceCourse,
   users,
-  pythonDataScience_module1,
-  pythonDataScience_module1Seq,
-  MLDL_module1,
-  MTDL_module1Seq,
-  IoT_module1,
-  cloud_module1,
-  IOT_CLoud_Course,
-  MLDL_EMAIL_LIST_FINAL_user,
-  PythonDataScience_EMAIL_LIST_FINAL_1,
-  PythonDataScience_EMAIL_LIST_FINAL_2,
-  IOT_FINAL_EMAIL_LIST,
-  Cloud_FINAL_EMAIL_LIST,
-  cloud_module2,
-  IoT_module2,
-  pythonDataScience_module2,
-  MLDL_module2,
-  cloud_module1Seq,
-  cloud_module2Seq,
-  IoT_module2Seq,
-  MLDL_module2Seq,
-  pythonDataScience_module2Seq,
-  pythonDataScience_module3,
-  pythonDataScience_module3Seq,
+  newCourses,
   MLDL_module3,
+  quizQuestion
 } = require("../seed/resourcesData");
 const { FieldValue } = require("firebase-admin/firestore");
 
@@ -127,8 +101,9 @@ async function getUserIdsByEmail(emailIds) {
 const pushResources = async (req, res) => {
   try {
     // const response = await pushResourcesToFirestore(MLDL_module3, "resources");
-    // const response = await pushElementsToFirestore(IOT_CLoud_Course, "courses");
-    // res.status(200).json({ data: response });
+    // const response = await pushElementsToFirestore(newCourses, "courses");
+    
+    // return res.status(200).json({ data: response });
     res.send("Exit with 0 operations");
   } catch (error) {
     console.log(error);
@@ -138,15 +113,17 @@ const pushResources = async (req, res) => {
 
 const createPackages = async (req, res) => {
   try {
+    console.log("REACHED REQ")
     const response = await getUserIdsByEmail(users);
+    console.log(response)
     const firestore = admin.firestore();
-    const courseid = "nikJwaNsnFi10CioZBcR";
+    const courseid = "nN57HNXHzeYdhVDptJQe";
 
     const courseDocRef = await firestore
       .collection("courses")
       .doc(courseid)
       .get();
-
+    console.log(courseDocRef)
     if (!courseDocRef.exists) {
       res
         .status(400)
@@ -176,15 +153,13 @@ const createPackages = async (req, res) => {
 
       elements.push(element);
     }
-
-    // const packages = await pushElementsToFirestore(elements, "packages");
-
-    // res.status(200).json({
-    //   data: {
-    //     users: response,
-    //     packages: packages,
-    //   },
-    // });
+    const packages = await pushElementsToFirestore(elements, "packages");
+    return res.status(200).json({
+      data: {
+        users: response,
+        packages: packages,
+      },
+    });
     res.send("Exit with 0 operations");
   } catch (error) {
     console.log(error);
@@ -261,9 +236,26 @@ const getData = async (req, res) => {
   }
 };
 
+
+const pushQuiz=async (req,res)=>{
+  try {
+    // const response = await pushElementsToFirestore(quizQuestion, "quizzes");
+    // const response = await pushElementsToFirestore(newCourses, "courses");
+    
+    return res.status(200).json({ data: response });
+    res.send("Exit with 0 operations");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+};
 module.exports = {
   pushResources,
   createPackages,
   updateSequence,
   getData,
+  pushQuiz
 };
+
+
+

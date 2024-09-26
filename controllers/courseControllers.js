@@ -12,6 +12,7 @@ const getAllCourses = async (req, res) => {
   const courses = [];
   coursesSnapshot.forEach((doc) => {
     courses.push(doc.data());
+    console.log(doc.data());
   });
 
   res.status(200).json(courses);

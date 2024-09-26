@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const { decodeAccessToken } = require("../utils/firebase-utils");
 const requireAuth = require("../middleware/require-auth");
 const { getAllPackagesPurchased } = require("../controllers/userControllers");
+const { getClientGeolocation } = require("../controllers/geoLocation");
 const userRouter = express.Router();
 
 /**
@@ -240,5 +241,7 @@ userRouter.get("/get-details-by-id", async (req, res) => {
  *         description: Internal Server Error
  */
 userRouter.get("/get-all-packages-purchased", requireAuth, getAllPackagesPurchased);
+
+userRouter.get("/get-user-geolocation",getClientGeolocation)
 
 module.exports = userRouter;
