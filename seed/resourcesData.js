@@ -631,7 +631,7 @@ const MLDL_module3 = [
   }
  ];
 
-const users = ["shubhangmishra999@gmail.com"];
+const users = ["parasjainpj013@gmail.com"];
 
 const pythonDataScience_module3Seq = [
   "H7slV85kLqU9LGNwZ0hs",
@@ -743,44 +743,46 @@ const newCourses=[
 
 const quizQuestion=[
   {
+    type:"quiz",
     question: "THIS IS TEST QUESTION 1",
-    options:["option1","option2","option3","option4"],
+    questionIMG:"",
+    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
     correct:"option4"
   },
   {
+    type:"quiz",
     question: "THIS IS TEST QUESTION 2",
-    options:["option1","option2","option3","option4"],
-    correct:"option3"
-  },
-  {
-    question: "THIS IS TEST QUESTION 3",
-    options:["option1","option2","option3","option4"],
-    correct:"option1"
-  },
-  {
-    question: "THIS IS TEST QUESTION 4",
-    options:["option1","option2","option3","option4"],
-    correct:"option2"
-  },
-  {
-    question: "THIS IS TEST QUESTION 5",
-    options:["option1","option2","option3","option4"],
-    correct:"option1"
-  },
-  {
-    question: "THIS IS TEST QUESTION 6",
-    options:["option1","option2","option3","option4"],
+    questionIMG:"",
+    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
     correct:"option4"
   },
   {
-    question: "THIS IS TEST QUESTION 7",
-    options:["option1","option2","option3","option4"],
-    correct:"option3"
+    type:"quiz",
+    question: "THIS IS TEST QUESTION 3",
+    questionIMG:"",
+    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
+    correct:"option4"
   },
   {
-    question: "THIS IS TEST QUESTION 8",
-    options:["option1","option2","option3","option4"],
-    correct:"option2"
+    type:"quiz",
+    question: "THIS IS TEST QUESTION 4",
+    questionIMG:"",
+    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
+    correct:"option4"
+  },
+  {
+    type:"quiz",
+    question: "THIS IS TEST QUESTION 5",
+    questionIMG:"",
+    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
+    correct:"option4"
+  },
+  {
+    type:"quiz",
+    question: "THIS IS TEST QUESTION 6",
+    questionIMG:"",
+    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
+    correct:"option4"
   },
 ]
 

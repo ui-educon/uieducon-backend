@@ -36,12 +36,22 @@ const getCourseById = async (req, res) => {
     const promises = resourcesList.map(async (recordId) => {
       try {
         // fetch and return data object if exists
-        const resourceDocResponse = await db
-          .collection("resources")
-          .doc(recordId);
-        const resourceDocRef = await resourceDocResponse.get();
-        const courseData = resourceDocRef.data();
-        return courseData;
+          const resourceDocResponse = await db
+            .collection("resources")
+            .doc(recordId);
+          const resourceDocRef = await resourceDocResponse.get();
+          if(resourceDocRef.exists){
+            const courseData = resourceDocRef.data();
+            return courseData;
+          }
+          else{
+            const quizzesDocResponse = await db
+            .collection("quizzes")
+            .doc(recordId);
+            const quizzesDocRef = await quizzesDocResponse.get();
+            const quizData = quizzesDocRef.data();
+            return quizData;
+          }
       } catch (error) {
         return null;
       }
