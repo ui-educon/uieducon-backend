@@ -41,6 +41,7 @@ const {
   NotFoundErrorHandler,
   ServerErrorHandler,
 } = require("./middleware/errors");
+const liveVideoRouter = require("./routes/liveVideoRouter");
 
 dotenv.config();
 
@@ -69,6 +70,7 @@ app.use("/package", packageRouter);
 app.use("/order", orderRouter);
 app.use("/quiz", quizRouter);
 app.use("/admin", adminRouter);
+app.use("/liveVideo",liveVideoRouter)
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // 404: Not found
