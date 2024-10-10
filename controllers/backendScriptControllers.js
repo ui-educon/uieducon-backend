@@ -49,6 +49,29 @@ async function pushResourcesToFirestore(elements, collection) {
   }
 }
 
+
+// Firestore function to add quiz data and update with the generated ID
+async function pushQuizToFirestore(data, collection) {
+  const firestore = admin.firestore();
+  const collectionRef = firestore.collection(collection);  // Quizzes collection
+
+  try {
+    // Add the document without the ID first
+    const docRef = await collectionRef.add(data);  // Firestore generates the document ID
+    console.log("Quiz successfully added with ID:", docRef.id);
+
+    // Update the document to store the generated ID within it
+    await docRef.update({
+      recordId: docRef.id  // Store the generated document ID inside the document
+    });
+
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding quiz:", error);
+    throw new Error(error);
+  }
+}
+
 async function pushElementsToFirestore(elements, collection) {
   const firestore = admin.firestore();
   const recordIds = [];
@@ -73,6 +96,28 @@ async function pushElementsToFirestore(elements, collection) {
   }
 }
 
+// async function pushQuizArrayToFirestore(arr, collection) {
+//   const firestore = admin.firestore();
+//   const recordIds = [];
+//   const batch = firestore.batch();
+//   const collectionRef = firestore.collection(collection); // Replace with your collection name
+//   for (const element of arr) {
+//     const docRef = collectionRef.doc();
+//     element.recordId = docRef.id; // Add recordId to the element
+//     batch.set(docRef, element);
+//     recordIds.push(docRef.id);
+//   }
+//   try {
+//     await batch.commit();
+//     console.log("Elements successfully added to Firestore.");
+//     console.log(recordIds);
+//     return recordIds;
+//   } catch (error) {
+//     console.error("Error adding elements:", error);
+//     return []; // Return empty array on error
+//   }
+
+// }
 async function getUserIdsByEmail(emailIds) {
   const firestore = admin.firestore();
 
@@ -102,7 +147,7 @@ const pushResources = async (req, res) => {
   try {
     // const response = await pushResourcesToFirestore(MLDL_module3, "resources");
     // const response = await pushElementsToFirestore(newCourses, "courses");
-    
+
     // return res.status(200).json({ data: response });
     res.send("Exit with 0 operations");
   } catch (error) {
@@ -169,7 +214,7 @@ const createPackages = async (req, res) => {
 
 const updateSequence = async (req, res) => {
   const firestore = admin.firestore();
-  const courseid = "V8JOVcbMksF7lbYOZTx9";
+  const courseid = "nN57HNXHzeYdhVDptJQe";
 
   const courseDocRef = await firestore.collection("courses").doc(courseid);
   const getCourse = await courseDocRef.get();
@@ -182,11 +227,36 @@ const updateSequence = async (req, res) => {
 
   try {
     const update = {};
+
+
+    //THIS IS TO UPDATE THE SEQUENCE OF OLD DS (DISCARDED)
+
     // update["sequence"] = FieldValue.arrayUnion(...pythonDataScience_module3Seq);
     // await courseDocRef.update(update);
     // return res
     //   .status(200)
     //   .json({ message: "sequence updated!!", data: update.sequence });
+
+
+
+
+
+
+
+    //UPDATING THE DS OF SEQUENCE ARRAY IN COURSES COLLECTION 
+    // const existingCourseData = getCourse.data();
+
+    // const existingSequence = existingCourseData.sequence || [];
+
+    // Transform each element in the existing sequence array
+
+    // const updatedSequence = existingSequence.map((item) => ({
+      // type: "video",  
+      // recordId: item 
+    // }));
+
+    // Update the Firestore document with the new array
+    await courseDocRef.update({ sequence: updatedSequence });
     res.send("Exit with 0 operations");
   } catch (error) {
     console.log(error);
@@ -237,18 +307,34 @@ const getData = async (req, res) => {
 };
 
 
-const pushQuiz=async (req,res)=>{
+
+
+const pushQuiz = async (req, res) => {
   try {
-    // const response = await pushElementsToFirestore(quizQuestion, "quizzes");
-    // const response = await pushElementsToFirestore(newCourses, "courses");
-    
+    // Assuming `quizQuestion` is the array of objects (questions) coming from the request body
+    const quiz = {
+      title: quizQuestion.title || "Default Quiz Title",  // Quiz title
+      questions: quizQuestion.quizData,  // Array of questions
+      createdAt: admin.firestore.Timestamp.now()  // Timestamp for record creation
+    };
+
+    // Function to store the document
+    const response = await pushQuizToFirestore(quiz, "quizzes");
+
     return res.status(200).json({ data: response });
-    res.send("Exit with 0 operations");
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error });
+    console.log("Error adding quiz:", error);
+    res.status(500).json({ error: error.message });
   }
 };
+
+
+
+
+
+
+
+
 module.exports = {
   pushResources,
   createPackages,

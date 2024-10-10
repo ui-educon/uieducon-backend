@@ -33,25 +33,26 @@ const getCourseById = async (req, res) => {
   if (courseDocRef.exists) {
     const courseDocData = courseDocRef.data();
     const resourcesList = courseDocData?.sequence;
-    const promises = resourcesList.map(async (recordId) => {
+    const promises = resourcesList.map(async (item) => {
       try {
-        // fetch and return data object if exists
+        if (item.type === "video") {
+          // fetch and return data object if exists
           const resourceDocResponse = await db
             .collection("resources")
-            .doc(recordId);
+            .doc(item.recordId);
           const resourceDocRef = await resourceDocResponse.get();
-          if(resourceDocRef.exists){
-            const courseData = resourceDocRef.data();
-            return courseData;
-          }
-          else{
-            const quizzesDocResponse = await db
+          const courseData = resourceDocRef.data();
+          return courseData;
+        }
+        else if (item.type === "quiz") {
+          const quizzesDocResponse = await db
             .collection("quizzes")
-            .doc(recordId);
-            const quizzesDocRef = await quizzesDocResponse.get();
-            const quizData = quizzesDocRef.data();
-            return quizData;
-          }
+            .doc(item.recordId);
+          const quizzesDocRef = await quizzesDocResponse.get();
+          const quizData = quizzesDocRef.data();
+          return quizData;
+        }
+
       } catch (error) {
         return null;
       }

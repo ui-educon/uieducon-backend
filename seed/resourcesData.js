@@ -629,7 +629,7 @@ const MLDL_module3 = [
     type: "video",
     videoID: "9yrq47gSHeq"
   }
- ];
+];
 
 const users = ["parasjainpj013@gmail.com"];
 
@@ -726,65 +726,192 @@ const pythonDataScience_module3Seq = [
   "DdNEeHRuuHQBT76pxmFN"
 ]
 
-const newCourses=[
+const newCourses = [
   {
-    certificateTemplate : "",
+    certificateTemplate: "",
     description: "Python, Machine Learning, Deep Learning, Databse Management Skills and Research Skills",
     durationInDays: 365,
     name: "Python, Machine Learning, Deep Learning, Databse Management Skills and Research Skills",
     pricing: 4000,
-    recordId : "",
+    recordId: "",
     sequence: pythonDataScience_module3Seq,
     thumbnailUrl: "https://firebasestorage.googleapis.com/v0/b/uieducon-df5c7.appspot.com/o/courseThumbnails%2Fpython_MLDL_DBMS.svg?alt=media&token=923749ac-992a-48d6-b5e2-1347dcacab80",
-    totalContent:100
+    totalContent: 100
   }
 ]
 
 
-const quizQuestion=[
-  {
-    type:"quiz",
-    question: "THIS IS TEST QUESTION 1",
-    questionIMG:"",
-    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
-    correct:"option4"
-  },
-  {
-    type:"quiz",
-    question: "THIS IS TEST QUESTION 2",
-    questionIMG:"",
-    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
-    correct:"option4"
-  },
-  {
-    type:"quiz",
-    question: "THIS IS TEST QUESTION 3",
-    questionIMG:"",
-    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
-    correct:"option4"
-  },
-  {
-    type:"quiz",
-    question: "THIS IS TEST QUESTION 4",
-    questionIMG:"",
-    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
-    correct:"option4"
-  },
-  {
-    type:"quiz",
-    question: "THIS IS TEST QUESTION 5",
-    questionIMG:"",
-    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
-    correct:"option4"
-  },
-  {
-    type:"quiz",
-    question: "THIS IS TEST QUESTION 6",
-    questionIMG:"",
-    options:[{text:"test1",img:""},{text:"test2",img:""},{text:"test3",img:""},{text:"test4",img:""}],
-    correct:"option4"
-  },
-]
+const quizQuestion =
+{
+  quizData:
+    [
+      {
+        "recordId": "2DXVqNfNIr0klPBwytFo",
+        "question": "THIS IS TEST QUESTION 5",
+        "questionIMG": "",
+        "correct": "option4",
+        "type": "quiz",
+        "options": [
+          {
+            "img": "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg",
+            "text": "test1"
+          },
+          {
+            "img": "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg",
+            "text": "test2"
+          },
+          {
+            "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc9APxkj0xClmrU3PpMZglHQkx446nQPG6lA&s",
+            "text": "test3"
+          },
+          {
+            "img": "https://gratisography.com/wp-content/uploads/2024/01/gratisography-cyber-kitty-800x525.jpg",
+            "text": "test4"
+          }
+        ]
+      },
+      {
+        "recordId": "4cw8mdRW4K6c5Ni4kLqw",
+        "question": "THIS IS TEST QUESTION 4",
+        "questionIMG": "",
+        "correct": "option4",
+        "options": [
+          {
+            "img": "",
+            "text": "test1"
+          },
+          {
+            "img": "",
+            "text": "test2"
+          },
+          {
+            "img": "",
+            "text": "test3"
+          },
+          {
+            "img": "",
+            "text": "test4"
+          }
+        ],
+        "type": "quiz"
+      },
+      {
+        "recordId": "RN6rHe2xnx0EEwySAObh",
+        "question": "THIS IS TEST QUESTION 2",
+        "correct": "option4",
+        "options": [
+          {
+            "img": "",
+            "text": "test1"
+          },
+          {
+            "img": "",
+            "text": "test2"
+          },
+          {
+            "img": "",
+            "text": "test3"
+          },
+          {
+            "img": "",
+            "text": "test4"
+          }
+        ],
+        "type": "quiz",
+        "questionIMG": "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
+      },
+      {
+        "recordId": "tklXYizRZSZBQoCZKFrP",
+        "question": "THIS IS TEST QUESTION 6",
+        "questionIMG": "",
+        "correct": "option4",
+        "options": [
+          {
+            "img": "",
+            "text": "test1"
+          },
+          {
+            "img": "",
+            "text": "test2"
+          },
+          {
+            "img": "",
+            "text": "test3"
+          },
+          {
+            "img": "",
+            "text": "test4"
+          }
+        ],
+        "type": "quiz"
+      },
+      {
+        "recordId": "wUg5B21Z63iPXCxRnswH",
+        "question": "THIS IS TEST QUESTION 1",
+        "questionIMG": "",
+        "correct": "option4",
+        "options": [
+          {
+            "img": "",
+            "text": "test1"
+          },
+          {
+            "img": "",
+            "text": "test2"
+          },
+          {
+            "img": "",
+            "text": "test3"
+          },
+          {
+            "img": "",
+            "text": "test4"
+          }
+        ],
+        "type": "quiz"
+      },
+      {
+        "recordId": "zTrMBlilvdAIR0eurRQJ",
+        "question": "THIS IS TEST QUESTION 3",
+        "questionIMG": "",
+        "correct": "option4",
+        "options": [
+          {
+            "img": "",
+            "text": "test1"
+          },
+          {
+            "img": "",
+            "text": "test2"
+          },
+          {
+            "img": "",
+            "text": "test3"
+          },
+          {
+            "img": "",
+            "text": "test4"
+          }
+        ],
+        "type": "quiz"
+      }
+    ],
+  title: "THIS IS QUIZ TITILE",
+  type: "quiz"
+
+}
+
+
+
+quizStat: {
+  "numberOfQuizzes": 10,
+
+    "quiz": [{ recordID: "nijnjkn", attempted: "false", scorePercentage: "60" },
+    { recordID: "nijnjkn", attempted: "false", scorePercentage: "60" },
+    { recordID: "nijnjkn", attempted: "false", scorePercentage: "60" }]
+
+}
+
 
 module.exports = {
   MLDL_module3,
