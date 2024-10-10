@@ -4,12 +4,17 @@ const { liveVideoWebhook, instantLiveStream, scheduleLiveStream, startScheduledL
 // const { createOrder } = require("../controllers/orderControllers");
 const liveVideoRouter = express.Router();
 
+
 liveVideoRouter.post("/getWebhook",liveVideoWebhook)
+
 liveVideoRouter.post("/instantLiveStream",instantLiveStream)
 liveVideoRouter.post("/scheduleLiveStream",scheduleLiveStream)
 liveVideoRouter.get("/startScheduledLive",startScheduledLiveStream)
 liveVideoRouter.get("/stopLive",stopLiveStream)
 liveVideoRouter.delete("/deleteWebhook",deleteWebhook)
+
+
+
 liveVideoRouter.post("/createWebhook",createWebhook)
 // orderRouter.post("/create-order",requireAuth, createOrder);
 

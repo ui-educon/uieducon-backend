@@ -903,14 +903,13 @@ const quizQuestion =
 
 
 
-quizStat: {
-  "numberOfQuizzes": 10,
-
-    "quiz": [{ recordID: "nijnjkn", attempted: "false", scorePercentage: "60" },
-    { recordID: "nijnjkn", attempted: "false", scorePercentage: "60" },
-    { recordID: "nijnjkn", attempted: "false", scorePercentage: "60" }]
-
-}
+// quizStat: {
+//     "numberOfQuizzes": 10,
+//     "quiz": [{ recordID: "nijnjkn", attempted: "false", scorePercentage: "60" },
+//     { recordID: "nijnjkn", attempted: "false", scorePercentage: "60" },
+//     { recordID: "nijnjkn", attempted: "false", scorePercentage: "60" }],
+//  
+// }
 
 
 module.exports = {
