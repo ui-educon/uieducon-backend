@@ -240,9 +240,6 @@ const updateSequence = async (req, res) => {
 
 
 
-
-
-
     //UPDATING THE DS OF SEQUENCE ARRAY IN COURSES COLLECTION 
     // const existingCourseData = getCourse.data();
 
@@ -256,7 +253,7 @@ const updateSequence = async (req, res) => {
     // }));
 
     // Update the Firestore document with the new array
-    await courseDocRef.update({ sequence: updatedSequence });
+    // await courseDocRef.update({ sequence: updatedSequence });
     res.send("Exit with 0 operations");
   } catch (error) {
     console.log(error);
