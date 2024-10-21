@@ -1,5 +1,5 @@
 const admin = require("firebase-admin"); // Install with: npm install firebase-admin
-
+const { liveVideoWebhook, instantLiveStream, scheduleLiveStream, startScheduledLiveStream, stopLiveStream, deleteWebhook, createWebhook } = require("./liveVideoControllers");
 const {
   users,
   newCourses,
@@ -7,6 +7,7 @@ const {
   quizQuestion
 } = require("../seed/resourcesData");
 const { FieldValue } = require("firebase-admin/firestore");
+const { getAuth } = require("firebase-admin/auth");
 
 async function pushResourcesToFirestore(elements, collection) {
   const firestore = admin.firestore();
@@ -15,26 +16,66 @@ async function pushResourcesToFirestore(elements, collection) {
   const collectionRef = firestore.collection(collection); // Replace with your collection name
 
   for (const element of elements) {
-    const query = collectionRef.where("videoID", "==", element.videoID); // Check for existing element
-    try {
-      const snapshot = await query.get();
-      let docRef;
+    let response;
+    if (element.type == "quiz") {
+      const quiz = {
+        title: element.title || "Default Quiz Title",  // Quiz title
+        questions: element.quizData,  // Array of questions
+        createdAt: admin.firestore.Timestamp.now()  // Timestamp for record creation
+      };
 
-      if (snapshot.empty) {
-        // Create new document if not found
-        docRef = collectionRef.doc();
-        element.recordId = docRef.id;
-        batch.set(docRef, element);
-      } else {
-        // Use existing document ID if found
-        docRef = snapshot.docs[0].ref;
-        element.recordId = docRef.id;
+      const response = await pushQuizToFirestore(quiz, "quizzes");
+      const finalData={
+        type:"quiz",
+        recordId:response
+      }
+      recordIds.push(finalData)
+
+    }
+    else {
+
+
+      if (element.type == "liveVideo") {
+        const mockRes = {
+          status: (statusCode) => ({
+            json: (data) => {
+              console.log(`Status: ${statusCode}, Response:`, data);
+              response = data;  // Capture the data here
+            }
+          })
+        };
+        await scheduleLiveStream({ body: element }, mockRes);
+        // console.log(response)
+        element.videoID = response.id;
       }
 
-      recordIds.push(element.recordId);
-    } catch (error) {
-      console.error("Error processing element:", error);
-      recordIds.push(null); // Mark error with null in array
+      const query = collectionRef.where("videoID", "==", element.videoID); // Check for existing element
+      try {
+        const snapshot = await query.get();
+        let docRef;
+
+        if (snapshot.empty) {
+          // Create new document if not found
+          docRef = collectionRef.doc();
+          element.recordId = docRef.id;
+          batch.set(docRef, element);
+        } else {
+          // Use existing document ID if found
+          docRef = snapshot.docs[0].ref;
+          element.recordId = docRef.id;
+        }
+        const finalData = {
+          type : element.type=="video"?"video":"liveVideo",
+          recordId:element.recordId,
+          time:element.time?`${element.time}`:""
+        }
+
+        recordIds.push(finalData);
+      } catch (error) {
+        console.error("Error processing element:", error);
+        recordIds.push(null); // Mark error with null in array
+      }
+
     }
   }
 
@@ -146,7 +187,7 @@ async function getUserIdsByEmail(emailIds) {
 const pushResources = async (req, res) => {
   try {
     // const response = await pushResourcesToFirestore(MLDL_module3, "resources");
-    // const response = await pushElementsToFirestore(newCourses, "courses");
+    const response = await pushElementsToFirestore(newCourses, "courses");
 
     // return res.status(200).json({ data: response });
     res.send("Exit with 0 operations");
@@ -248,8 +289,8 @@ const updateSequence = async (req, res) => {
     // Transform each element in the existing sequence array
 
     // const updatedSequence = existingSequence.map((item) => ({
-      // type: "video",  
-      // recordId: item 
+    // type: "video",  
+    // recordId: item 
     // }));
 
     // Update the Firestore document with the new array
@@ -304,8 +345,6 @@ const getData = async (req, res) => {
 };
 
 
-
-
 const pushQuiz = async (req, res) => {
   try {
     // Assuming `quizQuestion` is the array of objects (questions) coming from the request body
@@ -325,9 +364,70 @@ const pushQuiz = async (req, res) => {
   }
 };
 
+const setType = async (req, res) => {
+  const { email, type } = req.body;
+  try {
 
+    if (type == "superAdmin") {
+      setTypeSuperAdmin(email);
+    }
+    else if (type == "manager") {
+      setTypeManager(email);
+    }
+    else if (type == 'teacher') {
+      setTypeTeacher(email);
+    }
+    res.status(200).json({ message: "Successfully Updated" })
+  }
+  catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+}
+async function setTypeSuperAdmin(email) {
+  getAuth().getUserByEmail(email).then((user) => {
+    console.log(user)
+    if (user.emailVerified) {
+      return getAuth().setCustomUserClaims(user.uid, {
+        superAdmin: true
+      })
+    }
+  })
 
+    .catch((error) => {
+      console.log(error);
+      res.status(400).json({ error: error.message })
+    })
+}
+async function setTypeManager(email) {
+  getAuth().getUserByEmail(email).then((user) => {
+    console.log(user)
+    if (user.emailVerified) {
+      return getAuth().setCustomUserClaims(user.uid, {
+        manager: true
+      })
+    }
+  })
 
+    .catch((error) => {
+      console.log(error);
+      res.status(400).json({ error: error.message })
+    })
+}
+async function setTypeTeacher(email) {
+  getAuth().getUserByEmail(email).then((user) => {
+    console.log(user)
+    if (user.emailVerified) {
+      return getAuth().setCustomUserClaims(user.uid, {
+        teacher: true
+      })
+    }
+  })
+
+    .catch((error) => {
+      console.log(error);
+      res.status(400).json({ error: error.message })
+    })
+}
 
 
 
@@ -337,8 +437,6 @@ module.exports = {
   createPackages,
   updateSequence,
   getData,
-  pushQuiz
+  pushQuiz,
+  setType
 };
-
-
-

@@ -42,6 +42,7 @@ const {
   ServerErrorHandler,
 } = require("./middleware/errors");
 const liveVideoRouter = require("./routes/liveVideoRouter");
+const { setType, checkType } = require("./controllers/backendScriptControllers");
 
 dotenv.config();
 
@@ -72,7 +73,8 @@ app.use("/quiz", quizRouter);
 app.use("/admin", adminRouter);
 app.use("/liveVideo",liveVideoRouter)
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
-
+// setType('parasjainpj013@gmail.com','superAdmin')
+// checkType('parasjainpj013@gmail.com')
 // 404: Not found
 // app.use(NotFoundErrorHandler);
 

@@ -35,6 +35,7 @@ const liveVideoWebhook = async (req, res) => {
 
     console.log("WEB HOOK RECEIVED")
     console.log(req.body)
+    console.log(res.body)
 
     res.status(200).send("OK");
 }
