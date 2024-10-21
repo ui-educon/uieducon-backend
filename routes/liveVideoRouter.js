@@ -17,6 +17,7 @@ const liveVideoRouter = express.Router();
 // liveVideoRouter.get("/startScheduledLive", checkTeacher, checkCorrectTeacher, startScheduledLiveStream)
 // liveVideoRouter.get("/stopLive", checkTeacher, stopLiveStream)
 // liveVideoRouter.delete("/deleteWebhook", checkSuperAdmin, deleteWebhook)
+// liveVideoRouter.post("/createWebhook", checkSuperAdmin,createWebhook)
 
 liveVideoRouter.post("/getWebhook", liveVideoWebhook)
 
