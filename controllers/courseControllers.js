@@ -35,7 +35,7 @@ const getCourseById = async (req, res) => {
     const resourcesList = courseDocData?.sequence;
     const promises = resourcesList.map(async (item) => {
       try {
-        if (item.type === "video") {
+        if (item.type === "video" || item.type === "liveVideo") {
           // fetch and return data object if exists
           const resourceDocResponse = await db
             .collection("resources")
