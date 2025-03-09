@@ -2,8 +2,9 @@ const express = require("express");
 const admin = require("firebase-admin");
 const { decodeAccessToken } = require("../utils/firebase-utils");
 const requireAuth = require("../middleware/require-auth");
-const { getAllPackagesPurchased } = require("../controllers/userControllers");
+const { getAllPackagesPurchased, getAllUsers } = require("../controllers/userControllers");
 const { getClientGeolocation } = require("../controllers/geoLocation");
+const { setType } = require("../controllers/backendScriptControllers");
 const userRouter = express.Router();
 
 /**
@@ -87,6 +88,7 @@ userRouter.post("/create-user", async (req, res) => {
         email: decodedToken?.email || "",
         name: decodedToken?.name || "",
         photoUrl: decodedToken?.picture || "",
+        type:"user"
       };
 
       // TODO: Check if user already exists, else it will complete replace existing doc with new one !!
@@ -244,4 +246,9 @@ userRouter.get("/get-all-packages-purchased", requireAuth, getAllPackagesPurchas
 
 userRouter.get("/get-user-geolocation",getClientGeolocation)
 
+userRouter.get("/get-all-users",getAllUsers)
+
+
+
+userRouter.post("/update-user-type",setType);
 module.exports = userRouter;

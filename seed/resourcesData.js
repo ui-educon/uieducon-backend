@@ -12,7 +12,7 @@ const MLDL_module3 = [
     title: "TESTING THROUGH SCRIPT",
     type: "liveVideo",
     videoID: "",
-    time:"2024-10-18 16:26:00",
+    time:"2025-01-05 18:26:00",
     teacherEmail:"testemail@gmail.com"
   },
   {
@@ -176,7 +176,7 @@ const MLDL_module3 = [
  
 ];
 
-const users = ["parasjainpj013@gmail.com"];
+const users = ["testinguieducon@gmail.com"];
 
 const pythonDataScience_module3Seq = [
   { type: 'video', recordId: 'y7PEIe0CmGlS1dQBBDFL', time: '' },

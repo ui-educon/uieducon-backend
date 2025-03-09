@@ -1,5 +1,5 @@
 const express = require("express");
-const { liveVideoWebhook, instantLiveStream, scheduleLiveStream, startScheduledLiveStream, stopLiveStream, deleteWebhook, createWebhook, getFcmToken , setFcmToken} = require("../controllers/liveVideoControllers");
+const { liveVideoWebhook, instantLiveStream, scheduleLiveStream, startScheduledLiveStream, stopLiveStream, deleteWebhook, createWebhook, getFcmToken , setFcmToken, getLiveVideos,getAllLiveVideos, startStreamConnection} = require("../controllers/liveVideoControllers");
 // const requireAuth = require("../middleware/require-auth");
 const checkTeacher = require("..//middleware/check-teacher")
 const checkCorrectTeacher = require("..//middleware/check-correct-teacher")
@@ -30,6 +30,9 @@ liveVideoRouter.get("/stopLive",  stopLiveStream)
 liveVideoRouter.delete("/deleteWebhook", deleteWebhook)
 
 liveVideoRouter.get("/sendFcmToken",  setFcmToken)
+liveVideoRouter.get("/getLiveVideos",  getLiveVideos)
+liveVideoRouter.get("/getAllLiveVideos",  getAllLiveVideos)
+liveVideoRouter.get("/streamStatus",  startStreamConnection)
 
 
 liveVideoRouter.post("/createWebhook", createWebhook)

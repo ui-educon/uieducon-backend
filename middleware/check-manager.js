@@ -9,6 +9,14 @@ async function checkManager(req, res, next) {
     
     // Check if email exists and custom claim 'admin' is true
     if (decodedToken.email && (decodedToken.superAdmin||decodedToken.manager)) {
+      req.body.decodedUserId=decodedToken.user_id;
+      req.body.decodedEmail= decodedToken.email;
+      if(decodedToken.superAdmin){
+        req.body.superAdmin = true;
+      }
+      if(decodedToken.manager){
+        req.body.manager = true;
+      }
       next(); // Proceed if the user is authenticated and has the admin claim
     } else {
       console.error("Unauthorized: Custom claim 'Manager' is missing");
