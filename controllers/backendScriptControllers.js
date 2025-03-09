@@ -1,103 +1,66 @@
 const admin = require("firebase-admin"); // Install with: npm install firebase-admin
+
 const {
-  liveVideoWebhook,
-  instantLiveStream,
-  scheduleLiveStream,
-  startScheduledLiveStream,
-  stopLiveStream,
-  deleteWebhook,
-  createWebhook
-} = require("./liveVideoControllers");
-const axios = require('axios');
-const {
+  ResearchMethodologies,
+  ResearchMethodologiesCourse,
+  MLDL,
+  MLDLCourse,
+  PythonDataScienceCourse,
   users,
-  newCourses,
+  pythonDataScience_module1,
+  pythonDataScience_module1Seq,
+  MLDL_module1,
+  MTDL_module1Seq,
+  IoT_module1,
+  cloud_module1,
+  IOT_CLoud_Course,
+  MLDL_EMAIL_LIST_FINAL_user,
+  PythonDataScience_EMAIL_LIST_FINAL_1,
+  PythonDataScience_EMAIL_LIST_FINAL_2,
+  IOT_FINAL_EMAIL_LIST,
+  Cloud_FINAL_EMAIL_LIST,
+  cloud_module2,
+  IoT_module2,
+  pythonDataScience_module2,
+  MLDL_module2,
+  cloud_module1Seq,
+  cloud_module2Seq,
+  IoT_module2Seq,
+  MLDL_module2Seq,
+  pythonDataScience_module2Seq,
+  pythonDataScience_module3,
+  pythonDataScience_module3Seq,
   MLDL_module3,
-  quizQuestion
 } = require("../seed/resourcesData");
 const { FieldValue } = require("firebase-admin/firestore");
-const { getAuth } = require("firebase-admin/auth");
-const { changeFolderOfUploadedVideo } = require("./contentDataControllers");
-const { createPackageOrder } = require("./packageControllers");
 
-// Function to push an array of resource elements to Firestore in batch
-async function pushResourcesToFirestore(elements, collection, teacherEmail) {
+async function pushResourcesToFirestore(elements, collection) {
   const firestore = admin.firestore();
   const recordIds = [];
   const batch = firestore.batch();
   const collectionRef = firestore.collection(collection); // Replace with your collection name
 
   for (const element of elements) {
-    let response;
-    if (element.type == "quiz") {
-      // Process quiz separately
-      const quiz = {
-        title: element.title || "Default Quiz Title",  // Quiz title
-        questions: element.quizData,  // Array of questions
-        createdAt: admin.firestore.Timestamp.now()  // Timestamp for record creation
-      };
+    const query = collectionRef.where("videoID", "==", element.videoID); // Check for existing element
+    try {
+      const snapshot = await query.get();
+      let docRef;
 
-      response = await pushQuizToFirestore(quiz, "quizzes");
-      // Save minimal quiz reference for courses collection
-      const finalData = {
-        recordId: response,      // The quiz document ID from quizzes collection
-        title: element.title,    // Quiz title
-        type: "quiz"
-      };
-      recordIds.push(finalData);
-    } else {
-      // For liveVideo elements, schedule the live stream first
-      if (element.type == "liveVideo") {
-        const mockRes = {
-          status: (statusCode) => ({
-            json: (data) => {
-              // console.log(`Status: ${statusCode}, Response:`, data);
-              response = data;  // Capture the data here
-            }
-          })
-        };
-        const responseData = await scheduleLiveStream({ body: element }, mockRes);
-        // console.log(responseData);
-        // Update the videoID if needed
-        element.videoID = response.id;
-        element.rtmp_url = ""
-        element.stream_key = ""
-        element.chat_embed_url = ""
+      if (snapshot.empty) {
+        // Create new document if not found
+        docRef = collectionRef.doc();
+        element.recordId = docRef.id;
+        batch.set(docRef, element);
+      } else {
+        // Use existing document ID if found
+        docRef = snapshot.docs[0].ref;
+        element.recordId = docRef.id;
       }
-      if (element.videoID) {
-        await changeFolderOfUploadedVideo({ body: { videoId: element.videoID, email: teacherEmail } },
-          {
-            status: function (statusCode) {
-              // console.log(`Status: ${statusCode}`);
-              return this;  // Allow chaining like res.status().json()  THIS IS MOCK RES
-            },
-            json: function (data) {
-              // console.log('Response:', data);
-            }
-          }
-        )
-      }
-      // Check if a resource with the same videoID already exists
-      const query = collectionRef.where("videoID", "==", element.videoID);
-      try {
-        const snapshot = await query.get();
-        let docRef;
-        if (snapshot.empty) {
-          // Create new document if not found
-          docRef = collectionRef.doc();
-          element.recordId = docRef.id;
-          batch.set(docRef, element);
-        } else {
-          // Use existing document ID if found
-          docRef = snapshot.docs[0].ref;
-          element.recordId = docRef.id;
-        }
-        // For non-quiz items, return the entire element as stored
-        recordIds.push(element);
-      } catch (error) {
-        console.error("Error processing element:", error);
-        recordIds.push(null); // Mark error with null in array
-      }
+
+      recordIds.push(element.recordId);
+    } catch (error) {
+      console.error("Error processing element:", error);
+      recordIds.push(null); // Mark error with null in array
     }
   }
 
@@ -109,29 +72,6 @@ async function pushResourcesToFirestore(elements, collection, teacherEmail) {
   } catch (error) {
     console.error("Error adding elements:", error);
     return []; // Return empty array on error
-  }
-}
-
-// Firestore function to add quiz data and update with the generated ID and type
-async function pushQuizToFirestore(data, collection) {
-  const firestore = admin.firestore();
-  const collectionRef = firestore.collection(collection);  // Quizzes collection
-
-  try {
-    // Add the document without the ID first
-    const docRef = await collectionRef.add(data);  // Firestore generates the document ID
-    console.log("Quiz successfully added with ID:", docRef.id);
-
-    // Update the document to store the generated ID and the type ("quiz") within it
-    await docRef.update({
-      recordId: docRef.id,  // Store the generated document ID inside the document
-      type: "quiz"          // Set the type field for the quiz
-    });
-
-    return docRef.id;
-  } catch (error) {
-    console.error("Error adding quiz:", error);
-    throw new Error(error);
   }
 }
 
@@ -184,147 +124,11 @@ async function getUserIdsByEmail(emailIds) {
   }
 }
 
-// ----------------------------------------------------------------------
-// Implemented createCourse function
-// This function expects a course object to be provided in req.body.course,
-// which includes a 'sequence' array.
-// It pushes the sequence items to the "resources" collection,
-// sets the totalContent as the length of the sequence,
-// and then pushes the complete course object to the "courses" collection.
-const createCourse = async (req, res) => {
-  try {
-    const course = req.body.course; // Expecting a course object in the request body
-    if (!course || !course.sequence) {
-      return res.status(400).json({ error: "Course data or sequence missing." });
-    }
-
-    // First, push each sequence element to the "resources" collection.
-    const resourcesResponse = await pushResourcesToFirestore(course.sequence, "resources", req.body.decodedEmail);
-    // Update the course sequence with the minimal resource references
-    course.sequence = resourcesResponse;
-
-    // Set totalContent to the length of the sequence
-    course.totalContent = course.sequence.length;
-    // Ensure recordId is empty (or as per your logic)
-    course.recordId = course.recordId || "";
-    course.isApproved = false;
-    course.isRejected = false;
-    course.approvedBy = "";
-    course.pricingINR = course.pricing;
-    course.pricingDollar = "";
-    course.durationInDays = 365;
-    course.teacherId = req.body.decodedUserId;
-    // course.introductoryVideoId = 
-
-    // Now, push the complete course object to the "courses" collection.
-    // We wrap the course in an array since pushElementsToFirestore expects an array.
-    const courseResponse = await pushElementsToFirestore([course], "courses");
-
-    // console.log("THIS IS COURSE RESPONSE: ", courseResponse)
-
-    const firestore = admin.firestore();
-    const recordIds = [];
-    const batch = firestore.batch();
-    const usersCollectionRef = firestore.collection("users");
-
-
-    const snapshot = await usersCollectionRef.where("type", "==","superAdmin").get();
-    if (snapshot.empty) {
-      console.log("Admin or Manager not found in Firestore");
-    }
-
-    snapshot.forEach(async (doc) => {
-      console.log(doc.id)
-      const mockReq = {
-        body: {
-          uid: doc.id,
-          course_id: courseResponse[0],
-          order_creation_id: "Default Creation For SuperAdmin",
-          razorpay_payment_id: "Automatic Creation",
-        },
-      };
-
-      // Mock res object to handle responses
-      const mockRes = {
-        status: (statusCode) => ({
-          send: (message) => console.log(`Status: ${statusCode}, Message: ${message}`),
-        }),
-      };
-
-      await createPackageOrder(mockReq, mockRes)
-    });
-
-    const mappingCollectionRef = firestore.collection("mapping");
-    const mappingSnapshot = await mappingCollectionRef.where("teacherIds", "array-contains", req.body.decodedUserId).get();
-
-    mappingSnapshot.forEach(async (doc) => {
-      console.log(doc.id)
-      const mockReq = {
-        body: {
-          uid: doc.data().managerId,
-          course_id: courseResponse[0],
-          order_creation_id: "Default Creation For Manager",
-          razorpay_payment_id: "Automatic Creation",
-        },
-      };
-
-      // Mock res object to handle responses
-      const mockRes = {
-        status: (statusCode) => ({
-          send: (message) => console.log(`Status: ${statusCode}, Message: ${message}`),
-        }),
-      };
-
-      await createPackageOrder(mockReq, mockRes)
-    })
-    // const docRef = snapshot.docs[0].ref;
-    // await docRef.update({ type: "superAdmin" });
-    await changeFolderOfUploadedVideo({ body: { videoId: course.introductoryVideoId, email: req.body.decodedEmail } },
-      {
-        status: function (statusCode) {
-          // console.log(`Status: ${statusCode}`);
-          return this;  // Allow chaining like res.status().json()  THIS IS MOCK RES
-        },
-        json: function (data) {
-          // console.log('Response:', data);
-        }
-      }
-    )
-
-
-    return res.status(200).json({
-      message: "Course created successfully.",
-      resources: resourcesResponse,
-      course: courseResponse,
-    });
-  } catch (error) {
-    console.error("Error in createCourse:", error);
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-
-const pushResourcesReq = async (req, res) => {
-  try {
-    // const response = await pushResourcesToFirestore(users, "users");
-    // const response = await pushResourcesToFirestore(MLDL_module3, "resources");
-    const response = await pushResourcesToFirestore(req.body.sequence, "resources");
-    // const await pushElementsToFirestore(req.body.sequence, "courses");
-
-    return res.status(200).json({ data: response });
-    res.send("Exit with 0 operations");
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error });
-  }
-};
-
 const pushResources = async (req, res) => {
   try {
-    const response = await pushResourcesToFirestore(MLDL_module3, "resources");
-    // const response = await pushElementsToFirestore(newCourses, "courses");
-
-    // return res.status(200).json({ data: response });
+    // const response = await pushResourcesToFirestore(MLDL_module3, "resources");
+    // const response = await pushElementsToFirestore(IOT_CLoud_Course, "courses");
+    // res.status(200).json({ data: response });
     res.send("Exit with 0 operations");
   } catch (error) {
     console.log(error);
@@ -334,18 +138,15 @@ const pushResources = async (req, res) => {
 
 const createPackages = async (req, res) => {
   try {
-    // console.log("REACHED REQ")
     const response = await getUserIdsByEmail(users);
-    // console.log(response)
     const firestore = admin.firestore();
-    const courseid = "nN57HNXHzeYdhVDptJQe";
-
+    const courseid = "nikJwaNsnFi10CioZBcR";
 
     const courseDocRef = await firestore
       .collection("courses")
       .doc(courseid)
       .get();
-    // console.log(courseDocRef)
+
     if (!courseDocRef.exists) {
       res
         .status(400)
@@ -375,13 +176,15 @@ const createPackages = async (req, res) => {
 
       elements.push(element);
     }
-    const packages = await pushElementsToFirestore(elements, "packages");
-    return res.status(200).json({
-      data: {
-        users: response,
-        packages: packages,
-      },
-    });
+
+    // const packages = await pushElementsToFirestore(elements, "packages");
+
+    // res.status(200).json({
+    //   data: {
+    //     users: response,
+    //     packages: packages,
+    //   },
+    // });
     res.send("Exit with 0 operations");
   } catch (error) {
     console.log(error);
@@ -391,7 +194,7 @@ const createPackages = async (req, res) => {
 
 const updateSequence = async (req, res) => {
   const firestore = admin.firestore();
-  const courseid = "nN57HNXHzeYdhVDptJQe";
+  const courseid = "V8JOVcbMksF7lbYOZTx9";
 
   const courseDocRef = await firestore.collection("courses").doc(courseid);
   const getCourse = await courseDocRef.get();
@@ -404,25 +207,11 @@ const updateSequence = async (req, res) => {
 
   try {
     const update = {};
-    //THIS IS TO UPDATE THE SEQUENCE OF OLD DS (DISCARDED)
-
     // update["sequence"] = FieldValue.arrayUnion(...pythonDataScience_module3Seq);
     // await courseDocRef.update(update);
     // return res
     //   .status(200)
     //   .json({ message: "sequence updated!!", data: update.sequence });
-
-    //UPDATING THE DS OF SEQUENCE ARRAY IN COURSES COLLECTION 
-
-    // const existingCourseData = getCourse.data();
-    // const existingSequence = existingCourseData.sequence || [];
-    // Transform each element in the existing sequence array
-    // const updatedSequence = existingSequence.map((item) => ({
-    //   type: "video",  
-    //   recordId: item 
-    // }));
-    // Update the Firestore document with the new array
-    // await courseDocRef.update({ sequence: updatedSequence });
     res.send("Exit with 0 operations");
   } catch (error) {
     console.log(error);
@@ -472,197 +261,9 @@ const getData = async (req, res) => {
   }
 };
 
-const pushQuiz = async (req, res) => {
-  try {
-    // Assuming `quizQuestion` is the array of objects (questions) coming from the request body
-    const quiz = {
-      title: quizQuestion.title || "Default Quiz Title",  // Quiz title
-      questions: quizQuestion.quizData,  // Array of questions
-      createdAt: admin.firestore.Timestamp.now()  // Timestamp for record creation
-    };
-
-    // Function to store the document
-    const response = await pushQuizToFirestore(quiz, "quizzes");
-
-    return res.status(200).json({ data: response });
-  } catch (error) {
-    console.log("Error adding quiz:", error);
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const createFolder = async (req) => {
-
-  const firestore = admin.firestore();
-  const folderIdCollectionRef = firestore.collection("folderIds");
-  console.log("EMAIL: ",req.body.email)
-  const snapshot = await folderIdCollectionRef.where("email", "==", req.body.email).get();
-  if (snapshot.empty) {
-
-    try {
-      const response = await axios({
-        baseURL: "https://app.tpstreams.com",
-        method: "post",
-        url: `/api/v1/${process.env.ORG_CODE}/assets/folders/`,
-        data: {
-          title: req.body.email,
-        },
-        headers: {
-          Authorization: `Token ${process.env.TP_AUTH_TOKEN}`,
-        },
-      });
-
-      await folderIdCollectionRef.add({
-        email: req.body.email,
-        folderID: response.data.uuid,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
-      return response.data;
-      // console.log("RESPONSE FROM TPSTREAMS:", response.data)
-
-
-    } catch (error) {
-      console.log("The Folder Name Already Exists or no tile provided",error)
-      // console.error("Error creating folder:", error);
-      // throw new Error("Failed to create folder: " + error.message);
-    }
-  }
-
-};
-
-
-async function setTypeSuperAdmin(email) {
-  const user = await getAuth().getUserByEmail(email);
-  if (!user.emailVerified) {
-    throw new Error("User's email is not verified");
-  }
-
-  await getAuth().setCustomUserClaims(user.uid, {
-    superAdmin: true,
-    manager: false,
-    teacher: false
-  });
-
-  const firestore = admin.firestore();
-  const usersCollectionRef = firestore.collection("users");
-  const snapshot = await usersCollectionRef.where("email", "==", email).get();
-  if (snapshot.empty) {
-    throw new Error("User not found in Firestore");
-  }
-
-  const docRef = snapshot.docs[0].ref;
-  await docRef.update({ type: "superAdmin" });
-}
-
-
-async function setTypeManager(email) {
-  const user = await getAuth().getUserByEmail(email);
-  if (!user.emailVerified) {
-    throw new Error("User's email is not verified");
-  }
-
-  await getAuth().setCustomUserClaims(user.uid, {
-    superAdmin: false,
-    manager: true,
-    teacher: false
-  });
-
-  const firestore = admin.firestore();
-  const usersCollectionRef = firestore.collection("users");
-  const snapshot = await usersCollectionRef.where("email", "==", email).get();
-  if (snapshot.empty) {
-    throw new Error("User not found in Firestore");
-  }
-
-  const docRef = snapshot.docs[0].ref;
-  await docRef.update({ type: "manager" });
-}
-
-async function setTypeTeacher(email) {
-  const user = await getAuth().getUserByEmail(email);
-  if (!user.emailVerified) {
-    throw new Error("User's email is not verified");
-  }
-
-  await getAuth().setCustomUserClaims(user.uid, {
-    superAdmin: false,
-    manager: false,
-    teacher: true
-  });
-
-  const firestore = admin.firestore();
-  const usersCollectionRef = firestore.collection("users");
-  const snapshot = await usersCollectionRef.where("email", "==", email).get();
-  if (snapshot.empty) {
-    throw new Error("User not found in Firestore");
-  }
-
-  const docRef = snapshot.docs[0].ref;
-  await docRef.update({ type: "teacher" });
-}
-async function setTypeUser(email) {
-  const user = await getAuth().getUserByEmail(email);
-  if (!user.emailVerified) {
-    throw new Error("User's email is not verified");
-  }
-
-  await getAuth().setCustomUserClaims(user.uid, {
-    user: true,
-  });
-
-  const firestore = admin.firestore();
-  const usersCollectionRef = firestore.collection("users");
-  const snapshot = await usersCollectionRef.where("email", "==", email).get();
-  if (snapshot.empty) {
-    throw new Error("User not found in Firestore");
-  }
-
-  const docRef = snapshot.docs[0].ref;
-  await docRef.update({ type: "user" });
-}
-
-// Function to set the user type based on the request body
-const setType = async (req, res) => {
-  const { email, type } = req.body;
-  try {
-    if (type === "superAdmin") {
-      await setTypeSuperAdmin(email);
-    } else if (type === "manager") {
-      await setTypeManager(email);
-    } else if (type === "teacher") {
-      await setTypeTeacher(email);
-    } else {
-      await setTypeUser(email);
-    }
-
-    await createFolder(req);
-    res.status(200).json({ message: "Successfully Updated" });
-  } catch (error) {
-    console.error("Error in setType:", error);
-    res.status(500).json({ error: error.message });
-  }
-};
-function deleteAsset(assedId){
-    fetch(`https://app.tpstreams.com/api/v1/abyb62/assets/${assedId}/`, 
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json' ,
-          'Authorization':`Token ${process.env.TP_AUTH_TOKEN}`
-        },
-      }
-      
-    )
-
-}
 module.exports = {
   pushResources,
   createPackages,
   updateSequence,
   getData,
-  pushQuiz,
-  setType,
-  pushResourcesReq,
-  createCourse,
-  deleteAsset
 };
