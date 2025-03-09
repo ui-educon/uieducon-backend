@@ -83,7 +83,7 @@ const liveVideoWebhook = async (req, res) => {
         const firestore = admin.firestore();
         const resourcesRef = firestore.collection("resources");
 
-        console.log("RESOURCEREF", resourcesRef)
+        console.log("Important Console Log",req.body.data )
         const videoId = req.body.id;
         if (req.body.live_stream?.status === 'Stopped') {
 
@@ -93,7 +93,7 @@ const liveVideoWebhook = async (req, res) => {
 
             const resourceSnap = await resourcesRef.where("videoID", "==", videoId).get();
             const email = resourceSnap.docs[0].data().teacherEmail;
-            console.log("RESOURCESNAP", resourceSnap.docs[0])
+            // console.log("RESOURCESNAP", resourceSnap.docs[0])
             // Check if the user exists in the Firestore collection
             // const snapshot = await FolderIdsRef.where("email", "==", email).get();
             if(resourceSnap.empty){
@@ -124,12 +124,12 @@ const liveVideoWebhook = async (req, res) => {
             // }
         }
 
-        else if (req.body.live_stream?.rtmp_url && req.body.live_stream?.stream_key) {
+        else if (req.body.data.live_stream?.rtmp_url && req.body.data.live_stream?.stream_key) {
             console.log("videoID", videoId);
 
             const streamId = req.body.id;
             const resourceSnap = await resourcesRef.where("videoID","==",videoId).get();
-            console.log("RESOIRCE SNAP",resourceSnap.docs.length)
+            // console.log("RESOIRCE SNAP",resourceSnap.docs.length)
             await resourceSnap.docs[0].ref.update({ rtmp_url:req.body.live_stream?.rtmp_url,stream_key:req.body.live_stream?.stream_key, chat_embed_url:req.body.live_stream?.chat_embed_url })  //updating rtmp_url and stream_key and chat_embed_url
             // Get the stored SSE connection for this stream
             const clientResponse = ACTIVE_STREAMS.get(streamId);
@@ -346,7 +346,7 @@ const startScheduledLiveStream = async (req, res) => {
     // })
 }
 const stopLiveStream = async (req, res) => {
-    console.log("REQQUEST REACHED")
+    // console.log("REQQUEST REACHED")
     console.log(req.body)
     const id = req.query.id;
     console.log(id)
