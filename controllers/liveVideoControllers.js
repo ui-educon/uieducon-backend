@@ -39,51 +39,11 @@ const createWebhook = async (req, res) => {
 };
 
 const liveVideoWebhook = async (req, res) => {
-
-
-    //SAMPLE RESPONSES ON WEBHOOK
-
-    // { "title" : "FINAL PHASE",
-    //      "bytes": null, "type": "livestream", "video": null, "id": "647XSkBuYMN", "live_stream": { "rtmp_url": "", "stream_key": null, "status": "Not Started", "hls_url": "https://d1too2jj5wlppy.cloudfront.net/live/abyb62/647XSkBuYMN/video.m3u8", "start": "2025-01-12 00:26:00", "transcode_recorded_video": true, "enable_drm_for_recording": true, "chat_embed_url": null, "chat_transcript_url": null, "chat_room_id": null, "resolutions": ["240p", "480p", "720p"], "enable_drm": false, "enable_llhls": false, "latency": "Low Latency", "notice_message": "Hang tight! The live stream will kick off at January 12, 2025, 12:26 AM." }, "parent": null, "parent_id": null, "drm_content_id": null }
-
-
-    //      {"title": "FINAL PHASE", "bytes": null, "type": "livestream", "video": null, "id": "647XSkBuYMN", "live_stream": {"rtmp_url": "rtmp://13.127.98.101/live", "stream_key": "org-abyb62-live-647XSkBuYMN-8Np1", "status": "Not Started", "hls_url": "https://d1too2jj5wlppy.cloudfront.net/live/abyb62/647XSkBuYMN/video.m3u8", "start": "2025-01-12 00:26:00", "transcode_recorded_video": true, "enable_drm_for_recording": true, "chat_embed_url": "https://app.tpstreams.com/live-chat/abyb62/647XSkBuYMN/", "chat_transcript_url": null, "chat_room_id": "5dceb32b-5783-417e-9e3a-3cd0651f42f7", "resolutions": ["240p", "480p", "720p"], "enable_drm": false, "enable_llhls": false, "latency": "Low Latency", "notice_message": "Hang tight! The live stream will kick off at January 12, 2025, 12:26 AM."}, "parent": null, "parent_id": null, "drm_content_id": null}
-
-    //      {"title": "FINAL PHASE", "bytes": null, "type": "livestream", "video": null, "id": "647XSkBuYMN", "live_stream": {"rtmp_url": "rtmp://13.127.98.101/live", "stream_key": "org-abyb62-live-647XSkBuYMN-8Np1", "status": "Streaming", "hls_url": "https://d1too2jj5wlppy.cloudfront.net/live/abyb62/647XSkBuYMN/video.m3u8", "start": "2025-01-12 00:26:00", "transcode_recorded_video": true, "enable_drm_for_recording": true, "chat_embed_url": "https://app.tpstreams.com/live-chat/abyb62/647XSkBuYMN/", "chat_transcript_url": null, "chat_room_id": "5dceb32b-5783-417e-9e3a-3cd0651f42f7", "resolutions": ["240p", "480p", "720p"], "enable_drm": false, "enable_llhls": false, "latency": "Low Latency", "notice_message": null}, "parent": null, "parent_id": null, "drm_content_id": null}
-
-
-
-    //      {"title": "FINAL PHASE", "bytes": null, "type": "livestream", "video": null, "id": "647XSkBuYMN", "live_stream": {"rtmp_url": "rtmp://13.127.98.101/live", "stream_key": "org-abyb62-live-647XSkBuYMN-8Np1", "status": "Disconnected", "hls_url": "https://d1too2jj5wlppy.cloudfront.net/live/abyb62/647XSkBuYMN/video.m3u8", "start": "2025-01-12 00:26:00", "transcode_recorded_video": true, "enable_drm_for_recording": true, "chat_embed_url": "https://app.tpstreams.com/live-chat/abyb62/647XSkBuYMN/", "chat_transcript_url": null, "chat_room_id": "5dceb32b-5783-417e-9e3a-3cd0651f42f7", "resolutions": ["240p", "480p", "720p"], "enable_drm": false, "enable_llhls": false, "latency": "Low Latency", "notice_message": null}, "parent": null, "parent_id": null, "drm_content_id": null}
-
-
-    //      {"title": "FINAL PHASE", "bytes": null, "type": "livestream", "video": null, "id": "647XSkBuYMN", "live_stream": {"rtmp_url": "rtmp://13.127.98.101/live", "stream_key": "org-abyb62-live-647XSkBuYMN-8Np1", "status": "Disconnected", "hls_url": "https://d1too2jj5wlppy.cloudfront.net/live/abyb62/647XSkBuYMN/video.m3u8", "start": "2025-01-12 00:26:00", "transcode_recorded_video": true, "enable_drm_for_recording": true, "chat_embed_url": "https://app.tpstreams.com/live-chat/abyb62/647XSkBuYMN/", "chat_transcript_url": null, "chat_room_id": "5dceb32b-5783-417e-9e3a-3cd0651f42f7", "resolutions": ["240p", "480p", "720p"], "enable_drm": false, "enable_llhls": false, "latency": "Low Latency", "notice_message": null}, "parent": null, "parent_id": null, "drm_content_id": null}
-
-    //      {"title": "FINAL PHASE", "bytes": null, "type": "livestream", "video": {"progress": 0, "thumbnails": null, "status": "Transcoding", "playback_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.m3u8", "dash_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.mpd", "preview_thumbnail_url": null, "cover_thumbnail_url": null, "format": "abr", "resolutions": ["240p", "360p", "480p", "720p"], "video_codec": "h264", "audio_codec": "aac", "enable_drm": true, "tracks": [], "inputs": [{"url": "private/647XSkBuYMN/video.mp4"}], "transmux_only": null, "duration": null, "content_protection_type": "drm", "generate_subtitle": false, "video_codecs": ["h264"], "output_urls": {"h264": {"hls_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.m3u8", "dash_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.mpd"}}}, "id": "647XSkBuYMN", "live_stream": {"rtmp_url": "rtmp://13.127.98.101/live", "stream_key": "org-abyb62-live-647XSkBuYMN-8Np1", "status": "Completed", "hls_url": "https://d1too2jj5wlppy.cloudfront.net/live/abyb62/647XSkBuYMN/video.m3u8", "start": "2025-01-12 00:26:00", "transcode_recorded_video": true, "enable_drm_for_recording": true, "chat_embed_url": "https://app.tpstreams.com/live-chat/abyb62/647XSkBuYMN/", "chat_transcript_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/chat.json", "chat_room_id": "5dceb32b-5783-417e-9e3a-3cd0651f42f7", "resolutions": ["240p", "480p", "720p"], "enable_drm": false, "enable_llhls": false, "latency": "Low Latency", "notice_message": "The live stream has come to an end. Stay tuned, we'll have the recording ready for you shortly."}, "parent": null, "parent_id": null, "drm_content_id": "skd://1d9122a22e3a4dd0923a9de80dbbdaa5"}
-
-
-//  {"title": "FINAL PHASE", "bytes": null, "type": "livestream", "video": {"progress": 0, "thumbnails": null, "status": "Completed",
-//      "playback_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.m3u8",
-//       "dash_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.mpd", "preview_thumbnail_url": null, 
-//      "cover_thumbnail_url": null, "format": "abr", "resolutions": ["240p", "360p", "480p", "720p"], "video_codec": "h264", "audio_codec": "aac", 
-//      "enable_drm": true, "tracks": [{"id": 291397, "type": "Preview Thumbnail", "name": "", "url": "https://d1too2jj5wlppy.cloudfront.net/None", "bytes": null, 
-//      "language": "en", "width": null, "height": null, "duration": null, "is_active": true, "playlists": [], "subtitle_type": "Uploaded", "preview_thumbnail": 
-//      {"url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/sprite/sprite_image.png", "interval": 1, "width": 160, "height": 90, "rows": 7, "columns": 7}},
-//       {"id": 291398, "type": "Playlist", "name": "", "url": "https://d1too2jj5wlppy.cloudfront.net/None", "bytes": null, "language": "en", "width": null,
-//       "height": null, "duration": null, "is_active": true, "playlists": [{"name": "720p_h264_dash", "bytes": 732008, "width": 1280, "height": 720}, {"name": "720p_h264_hls", 
-//      "bytes": 716940, "width": 1280, "height": 720}, {"name": "480p_h264_dash", "bytes": 730991, "width": 854, "height": 480}, {"name": "480p_h264_hls", "bytes": 715883, "width": 854, "height": 480}, {"name": "360p_h264_dash", "bytes": 456811, "width": 640, "height": 360}, {"name": "360p_h264_hls", "bytes": 441740, 
-//      "width": 640, "height": 360}, {"name": "240p_h264_dash", "bytes": 456596, "width": 426, "height": 240}, {"name": "240p_h264_hls", "bytes": 441503, "width": 426,
-//       "height": 240}], "subtitle_type": "Uploaded", "preview_thumbnail": null}], "inputs": [{"url": "private/647XSkBuYMN/video.mp4"}], "transmux_only": null,
-//       "duration": 48, "content_protection_type": "drm", "generate_subtitle": false, "video_codecs": ["h264"], "output_urls": {"h264": {"hls_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.m3u8", "dash_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/video.mpd"}}}, 
-//      "id": "647XSkBuYMN", "live_stream": {"rtmp_url": "rtmp://13.127.98.101/live", "stream_key": "org-abyb62-live-647XSkBuYMN-8Np1", "status": "Completed",
-//       "hls_url": "https://d1too2jj5wlppy.cloudfront.net/live/abyb62/647XSkBuYMN/video.m3u8", "start": "2025-01-12 00:26:00", "transcode_recorded_video": true, 
-//      "enable_drm_for_recording": true, "chat_embed_url": "https://app.tpstreams.com/live-chat/abyb62/647XSkBuYMN/",
-//       "chat_transcript_url": "https://d1too2jj5wlppy.cloudfront.net/transcoded/647XSkBuYMN/chat.json", "chat_room_id": "5dceb32b-5783-417e-9e3a-3cd0651f42f7", "resolutions": ["240p", "480p", "720p"], 
-//      "enable_drm": false, "enable_llhls": false, "latency": "Low Latency", "notice_message": null}, "parent": null, "parent_id": null, "drm_content_id": "skd://1d9122a22e3a4dd0923a9de80dbbdaa5"}
     try {
         const firestore = admin.firestore();
         const resourcesRef = firestore.collection("resources");
 
-        console.log("Important Console Log",req.body.data )
+        console.log("Important Console Log",req.body )
         const videoId = req.body.id;
         if (req.body.live_stream?.status === 'Stopped') {
 
@@ -124,7 +84,7 @@ const liveVideoWebhook = async (req, res) => {
             // }
         }
 
-        else if (req.body.data.live_stream?.rtmp_url && req.body.data.live_stream?.stream_key) {
+        else if (req.body.live_stream?.rtmp_url && req.body.live_stream?.stream_key) {
             console.log("videoID", videoId);
 
             const streamId = req.body.id;
@@ -286,8 +246,8 @@ const scheduleLiveStream = async (req, res) => {
 };
 
 const startScheduledLiveStream = async (req, res) => {
-    console.log("REQQUEST REACHED")
-    console.log(req.body)
+    // console.log("REQQUEST REACHED")
+    // console.log(req.body)
     const id = req.query.id;
     const courseId = req.query.courseId;
     console.log(id)
@@ -300,7 +260,7 @@ const startScheduledLiveStream = async (req, res) => {
                 Authorization: `Token ${process.env.TP_AUTH_TOKEN}`,
             },
         });
-        console.log(response);
+        // console.log(response);
         // try {
 
         //     const firestore = admin.firestore();
