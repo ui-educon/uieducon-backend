@@ -86,13 +86,13 @@ const liveVideoWebhook = async (req, res) => {
 
         else if (req.body.live_stream?.rtmp_url && req.body.live_stream?.stream_key) {
             console.log("videoID", videoId);
-
             const streamId = req.body.id;
             const resourceSnap = await resourcesRef.where("videoID","==",videoId).get();
             // console.log("RESOIRCE SNAP",resourceSnap.docs.length)
             await resourceSnap.docs[0].ref.update({ rtmp_url:req.body.live_stream?.rtmp_url,stream_key:req.body.live_stream?.stream_key, chat_embed_url:req.body.live_stream?.chat_embed_url })  //updating rtmp_url and stream_key and chat_embed_url
             // Get the stored SSE connection for this stream
             const clientResponse = ACTIVE_STREAMS.get(streamId);
+            console.log("clientResponse: ",clientResponse)
 
             if (clientResponse) {
                 // Prepare the data to send to client
