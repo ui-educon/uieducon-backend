@@ -30,21 +30,5 @@ const getAllPackagesPurchased = async (req, res) => {
 
   res.send(packages);
 };
-const getAllUsers= async(req, res)=>{
-  const db = admin.firestore();
-  db.collection("users")
-    .get()
-    .then((snapshot) => {
-      const users = [];
-      snapshot.forEach((doc) => {
-        users.push(doc.data());
-      });
-      res.status(200).json(users);
-    })
-    .catch((error) => {
-      console.error("Error getting users", error);
-      res.status(500).send("Internal Server Error");
-    });
-}
 
-module.exports = { getAllPackagesPurchased, getAllUsers };
+module.exports = { getAllPackagesPurchased };

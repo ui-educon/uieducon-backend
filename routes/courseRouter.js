@@ -1,21 +1,11 @@
 const express = require("express");
-const multer = require("multer");
-const storage = multer.memoryStorage();
-// const upload = multer({ storage });
 const {
   getAllCourses,
   getCourseById,
   getCourseCompletionCertificate,
-  getAllCoursesForAdmin,
-  approveCourse,
-  rejectCourse
 } = require("../controllers/courseControllers");
 const { getPlayableLink } = require("../controllers/contentDataControllers");
-const { changeFolderOfUploadedVideo } = require("../controllers/contentDataControllers");
-const { pushResourcesReq, createCourse } = require("../controllers/backendScriptControllers");
-const { getUnapprovedCourses } = require("../controllers/teacherController");
-const checkTeacher = require("../middleware/check-teacher");
-const checkManager = require("../middleware/check-manager");
+
 const courseRouter = express.Router();
 
 /**
@@ -32,8 +22,6 @@ const courseRouter = express.Router();
  *         description: A list of all courses
  */
 courseRouter.get("/get-all-courses", getAllCourses);
-courseRouter.get("/unapproved-courses", checkTeacher,getUnapprovedCourses);
-courseRouter.get("/get-all-courses-for-admin", getAllCoursesForAdmin);
 
 /**
  * @swagger
@@ -79,9 +67,4 @@ courseRouter.get("/get-playable-link", getPlayableLink);
 
 courseRouter.get("/getCertificate", getCourseCompletionCertificate);
 
-courseRouter.post("/submit-course", checkTeacher,createCourse);
-
-courseRouter.post("/approve-course", approveCourse)
-courseRouter.post("/reject-course", rejectCourse)
-courseRouter.post("/change-folder", changeFolderOfUploadedVideo)
 module.exports = courseRouter;

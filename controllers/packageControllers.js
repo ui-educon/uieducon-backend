@@ -47,9 +47,6 @@ const createPackageOrder = async (req, res) => {
       .where("courseId", "==", courseId)
       .where("userId", "==", userId)
       .get();
-
-
-
     try {
       const currentDateTime = new Date();
       const createPackageRef = packagesRef.doc();
@@ -71,7 +68,6 @@ const createPackageOrder = async (req, res) => {
         packagePurchasedPrice: pricingINR,
         orderCreationId: orderCreationId,
         razorpayPaymentId: razorpayPaymentId,
-        quizStat: {}
       };
       await createPackageRef.set(newPackageBody);
       res.status(200).send("Package Purchased Successfully");
@@ -160,46 +156,9 @@ const courseCompletion = async (req, res) => {
   }
 };
 
-const updateQuizStat = async (req, res) => {
-  console.log(req.body)
-  const db = admin.firestore();
-  const userId = req.body.userId;
-  const courseId = req.body.courseId;
-  const totalQuestion = req.body.totalQuestion;
-  const correct = req.body.correct;
-  const quizId = req.body.quizId;
-  const packagesRef = db.collection("packages");
-  const packagesSnapshot = await packagesRef
-    .where("courseId", "==", courseId)
-    .where("userId", "==", userId)
-    .get();
-
-  if (packagesSnapshot.empty) {
-    return res
-      .status(400)
-      .json({ message: "Package does not exist", error: "Bad request" });
-  }
-
-  // Get the first document from the snapshot
-  const packageDoc = packagesSnapshot.docs[0];
-  const packageData = packageDoc.data();
-  const quizStat = packageData.quizStat || {}; // Ensure quizStat is defined
-
-  // Update quizStat with new data
-  quizStat[quizId] = { totalQuestion, correct };
-  packageData.quizStat = quizStat;
-  console.log("REQUEST REACH")
-  console.log(quizStat)
-  // Update the document in Firestore
-  await packageDoc.ref.update({ quizStat });
-  return res.status(200).json({ message: "Quiz stats updated successfully" });
-
-}
-
 module.exports = {
   getPackageById,
   createPackageOrder,
   updateIndex,
   courseCompletion,
-  updateQuizStat
 };
