@@ -70,6 +70,7 @@ const getCourseById = async (req, res) => {
 };
 
 const getCourseCompletionCertificate = async (req, res) => {
+  console.log("getCourseCompletionCertificate");
   try {
     const accessToken = req.headers.authorization;
     const { packageId } = req.query;
@@ -112,7 +113,7 @@ const getCourseCompletionCertificate = async (req, res) => {
 
     doc.pipe(stream);
 
-    let image = await axios.get(courseRes.certificateTemplate, {
+    let image = await axios.get(courseRes.certificateTemplateUrl, {
       responseType: "arraybuffer",
     });
 
@@ -121,9 +122,14 @@ const getCourseCompletionCertificate = async (req, res) => {
       height: doc.page.height,
     });
 
-    doc.moveDown(13);
+    doc.moveDown(16);
     doc.fontSize(36).fillColor("#000").text(userData.name, {
-      align: "center",
+      align: "left",
+    });
+
+    doc.moveDown(1); // Add some space
+    doc.fontSize(24).fillColor("#000").text(`For Successfully Completing the course: ${courseRes.name}`, {
+      align: "left",
     });
 
     // Finalize the PDF and end the stream
